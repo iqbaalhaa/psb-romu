@@ -86,93 +86,83 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="<?= base_url() ?>/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                        <img src="<?= base_url('foto/santri/' . session()->get('foto')) ?>" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Nama Admin</a>
+                        <a href="#" class="d-block"><?= session()->get('nama_user') ?></a>
                     </div>
                 </div>
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-                        <li class="nav-item ">
-                            <a href="#" class="nav-link text-white">
+                        <li class="nav-item">
+                            <a href="<?= base_url('Admin') ?>" class="nav-link <?= current_url() == base_url('Admin') ? 'active' : '' ?>">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Dashboard
-                                </p>
+                                <p>Dashboard</p>
                             </a>
                         </li>
-                        <label for="navbar">Data MA</label>
+
+                        <!-- Data MTs -->
+                        <li class="nav-header">DATA MTs</li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link text-white">
-                                <i class="nav-icon fas fa-server"></i>
-                                <p>
-                                    Data Master
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-user-graduate nav-icon"></i>
-                                        <p>Calon Santri</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('DataMa/Jurusan') ?>" class="nav-link">
-                                        <i class="fas fa-graduation-cap nav-icon"></i>
-                                        <p>Jurusan</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../../index3.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard v3</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <label for="navbar">Data MTS</label>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link text-white">
-                                <i class="nav-icon fas fa-server"></i>
-                                <p>
-                                    Data Master
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-user-graduate nav-icon"></i>
-                                        <p>Calon Santri</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('DataMa/Jurusan') ?>" class="nav-link">
-                                        <i class="fas fa-graduation-cap nav-icon"></i>
-                                        <p>Jurusan</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../../index3.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard v3</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <br>
-                        <li class="nav-item border-top">
-                            <a href="<?= base_url('User') ?>" class="nav-link text-white">
+                            <a href="<?= base_url('Admin/PendaftarMTs') ?>" class="nav-link">
                                 <i class="nav-icon fas fa-users"></i>
-                                <p>
-                                    Pengguna Sistem
-                                </p>
+                                <p>Data Pendaftar</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('Admin/PembayaranMTs') ?>" class="nav-link">
+                                <i class="nav-icon fas fa-money-bill"></i>
+                                <p>Status Pembayaran</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('Admin/BerkasMTs') ?>" class="nav-link">
+                                <i class="nav-icon fas fa-file"></i>
+                                <p>Verifikasi Berkas</p>
+                            </a>
+                        </li>
+
+                        <!-- Data MA -->
+                        <li class="nav-header">DATA MA</li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('Admin/PendaftarMA') ?>" class="nav-link">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>Data Pendaftar</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('Admin/PembayaranMA') ?>" class="nav-link">
+                                <i class="nav-icon fas fa-money-bill"></i>
+                                <p>Status Pembayaran</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('Admin/BerkasMA') ?>" class="nav-link">
+                                <i class="nav-icon fas fa-file"></i>
+                                <p>Verifikasi Berkas</p>
+                            </a>
+                        </li>
+
+                        <!-- Pengaturan -->
+                        <li class="nav-header">PENGATURAN</li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('Admin/TahunAjaran') ?>" class="nav-link">
+                                <i class="nav-icon fas fa-calendar"></i>
+                                <p>Tahun Ajaran</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('Admin/Jurusan') ?>" class="nav-link">
+                                <i class="nav-icon fas fa-graduation-cap"></i>
+                                <p>Jurusan</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('Admin/User') ?>" class="nav-link">
+                                <i class="nav-icon fas fa-users-cog"></i>
+                                <p>Manajemen User</p>
                             </a>
                         </li>
                     </ul>

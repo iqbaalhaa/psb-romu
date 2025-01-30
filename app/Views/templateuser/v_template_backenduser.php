@@ -33,6 +33,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
         .brand-link:hover {
             background-color: #218838 !important;
         }
+
+        .user-panel .image img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+        }
     </style>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -85,10 +91,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="<?= base_url() ?>/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                        <img src="<?= base_url('foto/santri/' . session()->get('foto')) ?>" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Nama Admin</a>
+                        <a href="#" class="d-block"><?= session()->get('nama_user') ?></a>
                     </div>
                 </div>
 
@@ -98,25 +104,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         <li class="nav-item ">
-                            <a href="#" class="nav-link text-white">
+                            <a href="<?= base_url('Santri') ?>" class="nav-link text-white">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item border-top">
-                            <a href="<?= base_url('User') ?>" class="nav-link text-white">
+                        <li class="nav-item">
+                            <a href="<?= base_url('Santri/BiodataSantri') ?>" class="nav-link text-white">
                                 <i class="nav-icon fas fa-users"></i>
                                 <p>
-                                    Pendaftaran
+                                    Biodata Santri
                                 </p>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a href="<?= base_url('User/DataSantri') ?>" class="nav-link text-white">
-                                <i class="nav-icon fas fa-users"></i>
-                                <p>Data Santri</p>
                             </a>
                         </li>
                     </ul>

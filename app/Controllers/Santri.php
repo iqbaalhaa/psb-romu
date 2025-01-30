@@ -19,4 +19,13 @@ class Santri extends BaseController
         ];
         return view('santri/v_dashboard', $data);
     }
+
+    public function BiodataSantri()
+    {
+        $data = [
+            'title' => 'Biodata Santri',
+            'isi'   => 'santri/v_detail_santri'
+        ];
+        return view('santri/v_detail_santri', $data);
+    }
 }

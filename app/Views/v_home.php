@@ -290,6 +290,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <input type="text" name="asal_sekolah" class="form-control" required>
                     </div>
 
+                    <div class="form-group">
+                        <label>Foto <span class="text-danger">*</span> <small>(Maksimal 1MB, Format: JPG/PNG)</small></label>
+                        <input type="file" name="foto" class="form-control-file" accept="image/jpeg,image/png" required>
+                    </div>
+
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle"></i> Data lengkap dapat dilengkapi setelah login di dashboard santri
                     </div>
@@ -368,6 +373,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <div class="form-group">
                         <label>Nama Sekolah <span class="text-danger">*</span></label>
                         <input type="text" name="asal_sekolah" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Foto <span class="text-danger">*</span> <small>(Maksimal 1MB, Format: JPG/PNG)</small></label>
+                        <input type="file" name="foto" class="form-control-file" accept="image/jpeg,image/png" required>
                     </div>
 
                     <div class="alert alert-info">

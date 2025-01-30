@@ -8,21 +8,79 @@
     <div class="row mb-3">
         <div class="col-12">
             <div class="alert alert-success shadow-sm">
-                <h5><i class="icon fas fa-check"></i> Selamat Datang Sahabat! <?= session()->get('nama_user') ?></h5>
-                <p class="mb-0">Anda login sebagai Administrator. Kelola sistem dengan bijak.</p>
+                <h5><i class="icon fas fa-check"></i> Selamat Datang! <?= session()->get('nama_user') ?></h5>
+                <p class="mb-0">Anda login sebagai Administrator. Kelola sistem pendaftaran dengan bijak.</p>
             </div>
         </div>
     </div>
 
+    <!-- Data MTs -->
+    <h4 class="mb-3">Data Pendaftaran MTs</h4>
+    <div class="row mb-4">
+        <div class="col-lg-3 col-6">
+            <div class="info-box shadow hover-effect">
+                <span class="info-box-icon bg-success"><i class="fas fa-users"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Total Pendaftar</span>
+                    <span class="info-box-number">
+                        <?= isset($total_mts) ? number_format($total_mts) : 0 ?>
+                        <small>Santri</small>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+            <div class="info-box shadow hover-effect">
+                <span class="info-box-icon bg-info"><i class="fas fa-clock"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Menunggu Verifikasi</span>
+                    <span class="info-box-number">
+                        <?= isset($pending_mts) ? number_format($pending_mts) : 0 ?>
+                        <small>Santri</small>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+            <div class="info-box shadow hover-effect">
+                <span class="info-box-icon bg-warning"><i class="fas fa-money-bill"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Belum Bayar</span>
+                    <span class="info-box-number">
+                        <?= isset($unpaid_mts) ? number_format($unpaid_mts) : 0 ?>
+                        <small>Santri</small>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+            <div class="info-box shadow hover-effect">
+                <span class="info-box-icon bg-success"><i class="fas fa-check-circle"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Terverifikasi</span>
+                    <span class="info-box-number">
+                        <?= isset($verified_mts) ? number_format($verified_mts) : 0 ?>
+                        <small>Santri</small>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data MA -->
+    <h4 class="mb-3">Data Pendaftaran MA</h4>
     <div class="row">
         <div class="col-lg-3 col-6">
             <div class="info-box shadow hover-effect">
                 <span class="info-box-icon bg-success"><i class="fas fa-users"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text">Data MAPABA</span>
+                    <span class="info-box-text">Total Pendaftar</span>
                     <span class="info-box-number">
-                        <?= isset($total_users) ? number_format($total_users) : 0 ?>
-                        <small>Kader</small>
+                        <?= isset($total_ma) ? number_format($total_ma) : 0 ?>
+                        <small>Santri</small>
                     </span>
                 </div>
             </div>
@@ -30,12 +88,12 @@
 
         <div class="col-lg-3 col-6">
             <div class="info-box shadow hover-effect">
-                <span class="info-box-icon bg-success"><i class="fas fa-user-graduate"></i></span>
+                <span class="info-box-icon bg-info"><i class="fas fa-clock"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text">Data PKD</span>
+                    <span class="info-box-text">Menunggu Verifikasi</span>
                     <span class="info-box-number">
-                        <?= isset($total_transactions) ? number_format($total_transactions) : 0 ?>
-                        <small>Kader</small>
+                        <?= isset($pending_ma) ? number_format($pending_ma) : 0 ?>
+                        <small>Santri</small>
                     </span>
                 </div>
             </div>
@@ -43,12 +101,12 @@
 
         <div class="col-lg-3 col-6">
             <div class="info-box shadow hover-effect">
-                <span class="info-box-icon bg-success"><i class="fas fa-user-tie"></i></span>
+                <span class="info-box-icon bg-warning"><i class="fas fa-money-bill"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text">Data PKL</span>
+                    <span class="info-box-text">Belum Bayar</span>
                     <span class="info-box-number">
-                        <?= isset($total_revenue) ? number_format($total_revenue) : 0 ?>
-                        <small>Kader</small>
+                        <?= isset($unpaid_ma) ? number_format($unpaid_ma) : 0 ?>
+                        <small>Santri</small>
                     </span>
                 </div>
             </div>
@@ -56,12 +114,12 @@
 
         <div class="col-lg-3 col-6">
             <div class="info-box shadow hover-effect">
-                <span class="info-box-icon bg-success"><i class="fas fa-user-shield"></i></span>
+                <span class="info-box-icon bg-success"><i class="fas fa-check-circle"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text">Data PKN</span>
+                    <span class="info-box-text">Terverifikasi</span>
                     <span class="info-box-number">
-                        <?= isset($total_products) ? number_format($total_products) : 0 ?>
-                        <small>Kader</small>
+                        <?= isset($verified_ma) ? number_format($verified_ma) : 0 ?>
+                        <small>Santri</small>
                     </span>
                 </div>
             </div>
@@ -111,14 +169,14 @@
     }
 
     .info-box-text {
-        font-size: 1.3rem;
+        font-size: 1rem;
         font-weight: 600;
         color: #28a745;
         margin-bottom: 10px;
     }
 
     .info-box-number {
-        font-size: 2rem;
+        font-size: 1.5rem;
         font-weight: 700;
         color: #28a745;
     }
