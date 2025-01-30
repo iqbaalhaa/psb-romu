@@ -101,22 +101,65 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-                        <li class="nav-item ">
-                            <a href="<?= base_url('Santri') ?>" class="nav-link text-white">
+                        <li class="nav-item">
+                            <a href="<?= base_url('Santri') ?>" class="nav-link text-white <?= current_url() == base_url('Santri') ? 'active' : '' ?>">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-header text-white">PENDAFTARAN</li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('Santri/BiodataSantri') ?>" class="nav-link text-white <?= current_url() == base_url('Santri/BiodataSantri') ? 'active' : '' ?>">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>Biodata Santri</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('Santri/Pembayaran') ?>" class="nav-link text-white <?= current_url() == base_url('Santri/Pembayaran') ? 'active' : '' ?>">
+                                <i class="nav-icon fas fa-money-bill"></i>
                                 <p>
-                                    Dashboard
+                                    Pembayaran
+                                    <?php if (session()->get('status_pembayaran') == 0) : ?>
+                                        <span class="badge badge-warning right">Belum Bayar</span>
+                                        <?php $status_pendaftaran = 'Menunggu Pembayaran'; ?>
+                                    <?php elseif (session()->get('status_pembayaran') == 1) : ?>
+                                        <span class="badge badge-info right">Menunggu</span>
+                                        <?php $status_pendaftaran = 'Menunggu Verifikasi'; ?>
+                                    <?php else : ?>
+                                        <span class="badge badge-success right">Lunas</span>
+                                        <?php $status_pendaftaran = 'Pembayaran Terverifikasi'; ?>
+                                    <?php endif; ?>
                                 </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url('Santri/BiodataSantri') ?>" class="nav-link text-white">
-                                <i class="nav-icon fas fa-users"></i>
+                            <a href="<?= base_url('Santri/Berkas') ?>" class="nav-link text-white <?= current_url() == base_url('Santri/Berkas') ? 'active' : '' ?>">
+                                <i class="nav-icon fas fa-file"></i>
                                 <p>
-                                    Biodata Santri
+                                    Upload Berkas
+                                    <?php if (session()->get('status_berkas') == 0) : ?>
+                                        <span class="badge badge-warning right">Belum Lengkap</span>
+                                    <?php else : ?>
+                                        <span class="badge badge-success right">Lengkap</span>
+                                    <?php endif; ?>
                                 </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-header text-white">STATUS</li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('Santri/Pengumuman') ?>" class="nav-link text-white <?= current_url() == base_url('Santri/Pengumuman') ? 'active' : '' ?>">
+                                <i class="nav-icon fas fa-bullhorn"></i>
+                                <p>Pengumuman</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-header text-white">PENGATURAN</li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('Santri/GantiPassword') ?>" class="nav-link text-white <?= current_url() == base_url('Santri/GantiPassword') ? 'active' : '' ?>">
+                                <i class="nav-icon fas fa-key"></i>
+                                <p>Ganti Password</p>
                             </a>
                         </li>
                     </ul>

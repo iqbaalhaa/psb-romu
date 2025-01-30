@@ -182,15 +182,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </div>
                     </div>
 
-                    <?php
-                    if (session()->getFlashdata('pesan')) {
-                        echo '<div class="alert alert-danger alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            <h5><i class="icon fas fa-ban"></i> Alert!</h5>';
-                        echo session()->getFlashdata('pesan');
-                        echo '</div>';
-                    }
-                    ?>
+                    <!-- Ganti alert dengan script SweetAlert2 -->
+                    <?php if (session()->getFlashdata('pesan')) : ?>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                Swal.fire({
+                                    title: 'Alert!',
+                                    text: '<?= session()->getFlashdata('pesan') ?>',
+                                    icon: 'error',
+                                    confirmButtonColor: '#dc3545',
+                                    confirmButtonText: 'OK'
+                                });
+                            });
+                        </script>
+                    <?php endif; ?>
+
+                    <!-- Pastikan SweetAlert2 sudah dimuat -->
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
                     <?= $this->renderSection('content') ?>
 

@@ -4,15 +4,21 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\M_Pendaftar;
+use CodeIgniter\Controller;
+use App\Models\ModelAdmin;
 
 class Admin extends BaseController
 {
     protected $M_Pendaftar;
+    public $ModelAdmin;
+    public $db;
 
     public function __construct()
     {
         $this->session = session();
         $this->M_Pendaftar = new M_Pendaftar();
+        $this->ModelAdmin = new ModelAdmin();
+        $this->db = \Config\Database::connect();
     }
 
     public function index()
@@ -43,28 +49,91 @@ class Admin extends BaseController
         return view('admin/v_pendaftar_ma', $data);
     }
 
-    public function verifikasiPembayaran($id)
+    public function verifikasiPembayaran($id_pembayaran)
     {
-        $this->db->table('tbl_pembayaran')
-            ->where('id_pembayaran', $id)
-            ->update(['status_pembayaran' => 2]);
+        try {
+            // Debug: Log ID pembayaran
+            log_message('info', 'Verifikasi pembayaran ID: ' . $id_pembayaran);
 
-        session()->setFlashdata('success', 'Pembayaran berhasil diverifikasi');
-        return redirect()->back();
+            $this->db->transStart();
+
+            // Ambil data pembayaran
+            $pembayaran = $this->ModelAdmin->getPembayaranById($id_pembayaran);
+
+            if (!$pembayaran) {
+                throw new \Exception('Data pembayaran tidak ditemukan');
+            }
+
+            // Update status pembayaran
+            if (!$this->ModelAdmin->verifikasiPembayaran($id_pembayaran)) {
+                throw new \Exception('Gagal memverifikasi pembayaran');
+            }
+
+            $this->db->transComplete();
+
+            if ($this->db->transStatus() === false) {
+                throw new \Exception('Gagal memverifikasi pembayaran');
+            }
+
+            session()->setFlashdata('pesan', 'Pembayaran berhasil diverifikasi');
+        } catch (\Exception $e) {
+            log_message('error', 'Error verifikasi pembayaran: ' . $e->getMessage());
+            session()->setFlashdata('error', $e->getMessage());
+        }
+
+        // Redirect berdasarkan jenjang santri
+        $jenjang = $this->ModelAdmin->getJenjangSantri($pembayaran['id_santri']);
+
+        if ($jenjang == 'MA') {
+            return redirect()->to('Admin/PembayaranMA');
+        } else {
+            return redirect()->to('Admin/PembayaranMTs');
+        }
     }
 
-    public function tolakPembayaran($id)
+    public function tolakPembayaran($id_pembayaran)
     {
-        $alasan = $this->request->getGet('alasan');
-        $this->db->table('tbl_pembayaran')
-            ->where('id_pembayaran', $id)
-            ->update([
-                'status_pembayaran' => 0,
-                'keterangan' => $alasan
-            ]);
+        try {
+            $alasan = $this->request->getGet('alasan');
 
-        session()->setFlashdata('success', 'Pembayaran ditolak');
-        return redirect()->back();
+            if (empty($alasan)) {
+                throw new \Exception('Alasan penolakan harus diisi');
+            }
+
+            $this->db->transStart();
+
+            // Ambil data pembayaran
+            $pembayaran = $this->ModelAdmin->getPembayaranById($id_pembayaran);
+
+            if (!$pembayaran) {
+                throw new \Exception('Data pembayaran tidak ditemukan');
+            }
+
+            // Update status pembayaran
+            if (!$this->ModelAdmin->tolakPembayaran($id_pembayaran, $alasan)) {
+                throw new \Exception('Gagal menolak pembayaran');
+            }
+
+            $this->db->transComplete();
+
+            if ($this->db->transStatus() === false) {
+                throw new \Exception('Gagal menolak pembayaran');
+            }
+
+            session()->setFlashdata('pesan', 'Pembayaran berhasil ditolak');
+        } catch (\Exception $e) {
+            log_message('error', 'Error tolak pembayaran: ' . $e->getMessage());
+            session()->setFlashdata('error', $e->getMessage());
+        }
+
+        // Redirect berdasarkan jenjang santri
+        $jenjang = $this->ModelAdmin->getJenjangSantri($pembayaran['id_santri']);
+
+        if ($jenjang == 'MA') {
+            return redirect()->to('Admin/PembayaranMA');
+        } else {
+            return redirect()->to('Admin/PembayaranMTs');
+        }
     }
 
     public function PembayaranMTs()

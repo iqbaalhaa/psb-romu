@@ -39,6 +39,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- DataTables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -233,6 +236,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             }
         });
     </script>
+
+    <?= $this->renderSection('scripts') ?>
 </body>
 
 </html>

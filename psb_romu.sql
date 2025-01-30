@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jan 30, 2025 at 04:06 AM
+-- Generation Time: Jan 30, 2025 at 12:08 PM
 -- Server version: 8.3.0
 -- PHP Version: 8.2.18
 
@@ -20,6 +20,23 @@ SET time_zone = "+00:00";
 --
 -- Database: `psb_romu`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_berkas`
+--
+
+DROP TABLE IF EXISTS `tbl_berkas`;
+CREATE TABLE IF NOT EXISTS `tbl_berkas` (
+  `id_berkas` int NOT NULL AUTO_INCREMENT,
+  `id_santri` int NOT NULL,
+  `kk` varchar(255) DEFAULT NULL,
+  `akta` varchar(255) DEFAULT NULL,
+  `ijazah` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id_berkas`),
+  KEY `id_santri` (`id_santri`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -104,6 +121,33 @@ INSERT INTO `tbl_jurusan` (`id_jurusan`, `nama_jurusan`, `kuota`, `is_active`) V
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_pembayaran`
+--
+
+DROP TABLE IF EXISTS `tbl_pembayaran`;
+CREATE TABLE IF NOT EXISTS `tbl_pembayaran` (
+  `id_pembayaran` int NOT NULL AUTO_INCREMENT,
+  `id_santri` int NOT NULL,
+  `no_pendaftaran` varchar(20) NOT NULL,
+  `tgl_upload` datetime NOT NULL,
+  `bukti_pembayaran` varchar(255) NOT NULL,
+  `status_pembayaran` int NOT NULL DEFAULT '0',
+  `updated_at` datetime NULL,
+  `alasan_tolak` text NULL,
+  PRIMARY KEY (`id_pembayaran`),
+  KEY `id_santri` (`id_santri`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tbl_pembayaran`
+--
+
+INSERT INTO `tbl_pembayaran` (`id_pembayaran`, `id_santri`, `no_pendaftaran`, `tgl_upload`, `bukti_pembayaran`, `status_pembayaran`, `updated_at`, `alasan_tolak`) VALUES
+(1, 2, 'MTs20250002', '2025-01-30 11:55:57', '1738238157_e3270de4273c34b82c7b.jpg', 1, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_pilihan_jurusan`
 --
 
@@ -118,25 +162,6 @@ CREATE TABLE IF NOT EXISTS `tbl_pilihan_jurusan` (
   KEY `id_santri` (`id_santri`),
   KEY `id_jurusan` (`id_jurusan`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_pembayaran`
---
-
-DROP TABLE IF EXISTS `tbl_pembayaran`;
-CREATE TABLE IF NOT EXISTS `tbl_pembayaran` (
-  `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT,
-  `id_santri` int(11) NOT NULL,
-  `no_pendaftaran` varchar(20) NOT NULL,
-  `tgl_upload` datetime NOT NULL,
-  `bukti_pembayaran` varchar(255) NOT NULL,
-  `status_pembayaran` int(1) NOT NULL DEFAULT 0 COMMENT '0=belum bayar, 1=menunggu verifikasi, 2=lunas',
-  `keterangan` text DEFAULT NULL,
-  PRIMARY KEY (`id_pembayaran`),
-  KEY `id_santri` (`id_santri`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -158,10 +183,10 @@ CREATE TABLE IF NOT EXISTS `tbl_santri` (
   `no_hp` varchar(15) DEFAULT NULL,
   `asal_sekolah` varchar(100) DEFAULT NULL,
   `jenjang` enum('MTs','MA') DEFAULT NULL,
-  `gelombang` int(1) NOT NULL DEFAULT '1' COMMENT '1=Gelombang 1, 2=Gelombang 2',
+  `gelombang` int NOT NULL DEFAULT '1' COMMENT '1=Gelombang 1, 2=Gelombang 2',
   `tahun_daftar` year DEFAULT NULL,
   `status_pendaftaran` enum('Menunggu Verifikasi','Berkas Diterima','Lulus Tes','Diterima','Ditolak') DEFAULT 'Menunggu Verifikasi',
-  `status_berkas` int(1) NOT NULL DEFAULT '0' COMMENT '0=belum lengkap, 1=lengkap',
+  `status_berkas` int NOT NULL DEFAULT '0' COMMENT '0=belum lengkap, 1=lengkap',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_santri`),
   UNIQUE KEY `no_pendaftaran` (`no_pendaftaran`),
@@ -224,23 +249,6 @@ INSERT INTO `tbl_user` (`id_user`, `nama_user`, `email`, `password`, `level`, `j
 (3, 'Budi Yanto', 'budi@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'santri', 'MTs', 'user.jpg', '1', '2025-01-20 16:34:53'),
 (4, 'Tono Toni', 'tono@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'santri', 'MA', 'default.jpg', '1', '2025-01-21 09:17:07'),
 (5, 'ini baruu', 'baru@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'santri', 'MTs', 'default.jpg', '1', '2025-01-27 17:06:21');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_berkas`
---
-
-DROP TABLE IF EXISTS `tbl_berkas`;
-CREATE TABLE IF NOT EXISTS `tbl_berkas` (
-  `id_berkas` int(11) NOT NULL AUTO_INCREMENT,
-  `id_santri` int(11) NOT NULL,
-  `kk` varchar(255) DEFAULT NULL,
-  `akta` varchar(255) DEFAULT NULL,
-  `ijazah` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id_berkas`),
-  KEY `id_santri` (`id_santri`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

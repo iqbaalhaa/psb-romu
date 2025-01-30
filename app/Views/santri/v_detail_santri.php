@@ -16,9 +16,6 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#dataWali">Data Wali</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#dataBerkas">Berkas</a>
-        </li>
     </ul>
 
     <div class="tab-content pt-3">
@@ -30,88 +27,72 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>No. Pendaftaran</label>
-                                <input type="text" class="form-control" value="<?= $santri['no_pendaftaran'] ?? '' ?>" readonly>
+                                <input type="text" class="form-control" value="<?= $santri['no_pendaftaran'] ?? 'Data tidak tersedia' ?>" readonly>
                             </div>
                             <div class="form-group">
-                                <label>Unit Sekolah <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" value="<?= $santri['jenjang'] ?? '' ?>" readonly>
+                                <label>Asal Sekolah</label>
+                                <input type="text" class="form-control" value="<?= $santri['asal_sekolah'] ?? '' ?>" readonly>
                             </div>
                             <div class="form-group">
-                                <label>Tahun Ajaran <span class="text-danger">*</span></label>
+                                <label>Tahun Ajaran</label>
                                 <input type="text" class="form-control" value="<?= $santri['tahun_daftar'] ?? '' ?>" readonly>
                             </div>
                             <div class="form-group">
-                                <label>Gelombang Pendaftaran <span class="text-danger">*</span></label>
-                                <select name="gelombang" class="form-control" required>
-                                    <option value="">-- Pilih Gelombang --</option>
-                                    <option value="1">Gelombang 1</option>
-                                    <option value="2">Gelombang 2</option>
-                                </select>
+                                <label>Gelombang Pendaftaran</label>
+                                <input type="text" class="form-control" value="Gelombang <?= $santri['gelombang'] ?? '' ?>" readonly>
                             </div>
                             <div class="form-group">
-                                <label>Nama Lengkap <span class="text-danger">*</span></label>
-                                <input type="text" name="nama_lengkap" class="form-control" value="<?= $santri['nama_lengkap'] ?? '' ?>" required>
+                                <label>Nama Lengkap</label>
+                                <input type="text" name="nama_lengkap" class="form-control" value="<?= $santri['nama_lengkap'] ?? '' ?>">
                             </div>
                             <div class="form-group">
-                                <label>Tempat Lahir <span class="text-danger">*</span></label>
-                                <input type="text" name="tempat_lahir" class="form-control" value="<?= $santri['tempat_lahir'] ?? '' ?>" required>
+                                <label>Tempat Lahir</label>
+                                <input type="text" name="tempat_lahir" class="form-control" value="<?= $santri['tempat_lahir'] ?? '' ?>">
                             </div>
                             <div class="form-group">
-                                <label>Tanggal Lahir <span class="text-danger">*</span></label>
-                                <input type="date" name="tgl_lahir" class="form-control" value="<?= $santri['tgl_lahir'] ?? '' ?>" required>
+                                <label>Tanggal Lahir</label>
+                                <input type="date" name="tgl_lahir" class="form-control" value="<?= $santri['tgl_lahir'] ?? '' ?>">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Jenis Kelamin <span class="text-danger">*</span></label>
-                                <select name="jenis_kelamin" class="form-control" required>
-                                    <option value="">-- Pilih Jenis Kelamin --</option>
+                                <label>Jenis Kelamin</label>
+                                <select name="jenis_kelamin" class="form-control">
                                     <option value="L" <?= ($santri['jenis_kelamin'] ?? '') == 'L' ? 'selected' : '' ?>>Laki-laki</option>
                                     <option value="P" <?= ($santri['jenis_kelamin'] ?? '') == 'P' ? 'selected' : '' ?>>Perempuan</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Agama <span class="text-danger">*</span></label>
-                                <select name="agama" class="form-control" required>
-                                    <option value="Islam">Islam</option>
-                                </select>
+                                <label>Agama</label>
+                                <input type="text" class="form-control" value="Islam" readonly>
                             </div>
                             <div class="form-group">
-                                <label>NISN <span class="text-danger">*</span></label>
-                                <input type="text" name="nisn" class="form-control" value="<?= $santri['nisn'] ?? '' ?>" required>
+                                <label>NISN</label>
+                                <input type="text" name="nisn" class="form-control" value="<?= $santri['nisn'] ?? '' ?>">
                             </div>
                             <div class="form-group">
-                                <label>Jalur Pendaftaran <span class="text-danger">*</span></label>
-                                <select name="jalur_pendaftaran" class="form-control" required>
-                                    <option value="">-- Pilih Jalur --</option>
-                                    <option value="Reguler">Reguler</option>
-                                    <option value="Prestasi">Prestasi</option>
-                                </select>
+                                <label>Jalur Pendaftaran</label>
+                                <input type="text" name="jalur_pendaftaran" class="form-control" value="<?= $santri['jalur_pendaftaran'] ?? '' ?>">
                             </div>
                             <div class="form-group">
-                                <label>Status dalam Keluarga <span class="text-danger">*</span></label>
-                                <select name="status_keluarga" class="form-control" required>
-                                    <option value="">-- Pilih Status --</option>
-                                    <option value="Anak Kandung">Anak Kandung</option>
-                                    <option value="Anak Tiri">Anak Tiri</option>
-                                    <option value="Anak Angkat">Anak Angkat</option>
-                                </select>
+                                <label>Status dalam Keluarga</label>
+                                <input type="text" name="status_keluarga" class="form-control" value="<?= $santri['status_keluarga'] ?? '' ?>">
                             </div>
                             <div class="form-group">
-                                <label>Anak Ke- <span class="text-danger">*</span></label>
-                                <input type="number" name="anak_ke" class="form-control" required>
+                                <label>Anak Ke-</label>
+                                <input type="number" name="anak_ke" class="form-control" value="<?= $santri['anak_ke'] ?? '' ?>">
                             </div>
                             <div class="form-group">
-                                <label>Alamat <span class="text-danger">*</span></label>
-                                <textarea name="alamat" class="form-control" rows="3" required><?= $santri['alamat'] ?? '' ?></textarea>
+                                <label>Alamat</label>
+                                <textarea name="alamat" class="form-control" rows="3"><?= $santri['alamat'] ?? '' ?></textarea>
                             </div>
                             <div class="form-group">
-                                <label>No. Telepon/HP <span class="text-danger">*</span></label>
-                                <input type="text" name="no_hp" class="form-control" value="<?= $santri['no_hp'] ?? '' ?>" required>
+                                <label>No. Telepon/HP</label>
+                                <input type="text" name="no_hp" class="form-control" value="<?= $santri['no_hp'] ?? '' ?>">
                             </div>
                             <div class="form-group">
-                                <label>Sekolah Asal <span class="text-danger">*</span></label>
-                                <input type="text" name="asal_sekolah" class="form-control" value="<?= $santri['asal_sekolah'] ?? '' ?>" required>
+                                <label>Sekolah Asal</label>
+                                <input type="text" name="asal_sekolah" class="form-control" value="<?= $santri['asal_sekolah'] ?? '' ?>">
                             </div>
                         </div>
                     </div>
@@ -138,13 +119,13 @@
                                 <label>Pendidikan Ayah <span class="text-danger">*</span></label>
                                 <select name="pendidikan_ayah" class="form-control" required>
                                     <option value="">-- Pilih Pendidikan --</option>
-                                    <option value="SD">SD/Sederajat</option>
-                                    <option value="SMP">SMP/Sederajat</option>
-                                    <option value="SMA">SMA/Sederajat</option>
-                                    <option value="D3">D3</option>
-                                    <option value="S1">S1</option>
-                                    <option value="S2">S2</option>
-                                    <option value="S3">S3</option>
+                                    <option value="SD" <?= ($detail['pendidikan_ayah'] ?? '') == 'SD' ? 'selected' : '' ?>>SD/Sederajat</option>
+                                    <option value="SMP" <?= ($detail['pendidikan_ayah'] ?? '') == 'SMP' ? 'selected' : '' ?>>SMP/Sederajat</option>
+                                    <option value="SMA" <?= ($detail['pendidikan_ayah'] ?? '') == 'SMA' ? 'selected' : '' ?>>SMA/Sederajat</option>
+                                    <option value="D3" <?= ($detail['pendidikan_ayah'] ?? '') == 'D3' ? 'selected' : '' ?>>D3</option>
+                                    <option value="S1" <?= ($detail['pendidikan_ayah'] ?? '') == 'S1' ? 'selected' : '' ?>>S1</option>
+                                    <option value="S2" <?= ($detail['pendidikan_ayah'] ?? '') == 'S2' ? 'selected' : '' ?>>S2</option>
+                                    <option value="S3" <?= ($detail['pendidikan_ayah'] ?? '') == 'S3' ? 'selected' : '' ?>>S3</option>
                                 </select>
                             </div>
                         </div>
@@ -157,11 +138,11 @@
                                 <label>Penghasilan Ayah <span class="text-danger">*</span></label>
                                 <select name="penghasilan_ayah" class="form-control" required>
                                     <option value="">-- Pilih Penghasilan --</option>
-                                    <option value="< 1.000.000">
+                                    <option value="< 1.000.000" <?= ($detail['penghasilan_ayah'] ?? '') == '< 1.000.000' ? 'selected' : '' ?>>
                                         < Rp 1.000.000</option>
-                                    <option value="1.000.000 - 3.000.000">Rp 1.000.000 - Rp 3.000.000</option>
-                                    <option value="3.000.000 - 5.000.000">Rp 3.000.000 - Rp 5.000.000</option>
-                                    <option value="> 5.000.000">> Rp 5.000.000</option>
+                                    <option value="1.000.000 - 3.000.000" <?= ($detail['penghasilan_ayah'] ?? '') == '1.000.000 - 3.000.000' ? 'selected' : '' ?>>Rp 1.000.000 - Rp 3.000.000</option>
+                                    <option value="3.000.000 - 5.000.000" <?= ($detail['penghasilan_ayah'] ?? '') == '3.000.000 - 5.000.000' ? 'selected' : '' ?>>Rp 3.000.000 - Rp 5.000.000</option>
+                                    <option value="> 5.000.000" <?= ($detail['penghasilan_ayah'] ?? '') == '> 5.000.000' ? 'selected' : '' ?>>> Rp 5.000.000</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -186,13 +167,13 @@
                                 <label>Pendidikan Ibu <span class="text-danger">*</span></label>
                                 <select name="pendidikan_ibu" class="form-control" required>
                                     <option value="">-- Pilih Pendidikan --</option>
-                                    <option value="SD">SD/Sederajat</option>
-                                    <option value="SMP">SMP/Sederajat</option>
-                                    <option value="SMA">SMA/Sederajat</option>
-                                    <option value="D3">D3</option>
-                                    <option value="S1">S1</option>
-                                    <option value="S2">S2</option>
-                                    <option value="S3">S3</option>
+                                    <option value="SD" <?= ($detail['pendidikan_ibu'] ?? '') == 'SD' ? 'selected' : '' ?>>SD/Sederajat</option>
+                                    <option value="SMP" <?= ($detail['pendidikan_ibu'] ?? '') == 'SMP' ? 'selected' : '' ?>>SMP/Sederajat</option>
+                                    <option value="SMA" <?= ($detail['pendidikan_ibu'] ?? '') == 'SMA' ? 'selected' : '' ?>>SMA/Sederajat</option>
+                                    <option value="D3" <?= ($detail['pendidikan_ibu'] ?? '') == 'D3' ? 'selected' : '' ?>>D3</option>
+                                    <option value="S1" <?= ($detail['pendidikan_ibu'] ?? '') == 'S1' ? 'selected' : '' ?>>S1</option>
+                                    <option value="S2" <?= ($detail['pendidikan_ibu'] ?? '') == 'S2' ? 'selected' : '' ?>>S2</option>
+                                    <option value="S3" <?= ($detail['pendidikan_ibu'] ?? '') == 'S3' ? 'selected' : '' ?>>S3</option>
                                 </select>
                             </div>
                         </div>
@@ -205,11 +186,11 @@
                                 <label>Penghasilan Ibu <span class="text-danger">*</span></label>
                                 <select name="penghasilan_ibu" class="form-control" required>
                                     <option value="">-- Pilih Penghasilan --</option>
-                                    <option value="< 1.000.000">
+                                    <option value="< 1.000.000" <?= ($detail['penghasilan_ibu'] ?? '') == '< 1.000.000' ? 'selected' : '' ?>>
                                         < Rp 1.000.000</option>
-                                    <option value="1.000.000 - 3.000.000">Rp 1.000.000 - Rp 3.000.000</option>
-                                    <option value="3.000.000 - 5.000.000">Rp 3.000.000 - Rp 5.000.000</option>
-                                    <option value="> 5.000.000">> Rp 5.000.000</option>
+                                    <option value="1.000.000 - 3.000.000" <?= ($detail['penghasilan_ibu'] ?? '') == '1.000.000 - 3.000.000' ? 'selected' : '' ?>>Rp 1.000.000 - Rp 3.000.000</option>
+                                    <option value="3.000.000 - 5.000.000" <?= ($detail['penghasilan_ibu'] ?? '') == '3.000.000 - 5.000.000' ? 'selected' : '' ?>>Rp 3.000.000 - Rp 5.000.000</option>
+                                    <option value="> 5.000.000" <?= ($detail['penghasilan_ibu'] ?? '') == '> 5.000.000' ? 'selected' : '' ?>>> Rp 5.000.000</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -277,62 +258,6 @@
                                     <label>No. HP Wali</label>
                                     <input type="text" name="no_hp_wali" class="form-control" value="<?= $detail['no_hp_wali'] ?? '' ?>">
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab Berkas -->
-        <div class="tab-pane fade" id="dataBerkas">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Ijazah <span class="text-danger">*</span></label>
-                                <input type="file" name="berkas_ijazah" class="form-control-file" <?= empty($berkas['berkas_ijazah']) ? 'required' : '' ?>>
-                                <?php if (!empty($berkas['berkas_ijazah'])) : ?>
-                                    <small class="text-success">File sudah diupload</small>
-                                <?php endif; ?>
-                            </div>
-                            <div class="form-group">
-                                <label>SKHUN <span class="text-danger">*</span></label>
-                                <input type="file" name="berkas_skhun" class="form-control-file" <?= empty($berkas['berkas_skhun']) ? 'required' : '' ?>>
-                                <?php if (!empty($berkas['berkas_skhun'])) : ?>
-                                    <small class="text-success">File sudah diupload</small>
-                                <?php endif; ?>
-                            </div>
-                            <div class="form-group">
-                                <label>Kartu Keluarga <span class="text-danger">*</span></label>
-                                <input type="file" name="berkas_kk" class="form-control-file" <?= empty($berkas['berkas_kk']) ? 'required' : '' ?>>
-                                <?php if (!empty($berkas['berkas_kk'])) : ?>
-                                    <small class="text-success">File sudah diupload</small>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Akta Kelahiran <span class="text-danger">*</span></label>
-                                <input type="file" name="berkas_akta" class="form-control-file" <?= empty($berkas['berkas_akta']) ? 'required' : '' ?>>
-                                <?php if (!empty($berkas['berkas_akta'])) : ?>
-                                    <small class="text-success">File sudah diupload</small>
-                                <?php endif; ?>
-                            </div>
-                            <div class="form-group">
-                                <label>KTP Ayah <span class="text-danger">*</span></label>
-                                <input type="file" name="berkas_ktp_ayah" class="form-control-file" <?= empty($berkas['berkas_ktp_ayah']) ? 'required' : '' ?>>
-                                <?php if (!empty($berkas['berkas_ktp_ayah'])) : ?>
-                                    <small class="text-success">File sudah diupload</small>
-                                <?php endif; ?>
-                            </div>
-                            <div class="form-group">
-                                <label>KTP Ibu <span class="text-danger">*</span></label>
-                                <input type="file" name="berkas_ktp_ibu" class="form-control-file" <?= empty($berkas['berkas_ktp_ibu']) ? 'required' : '' ?>>
-                                <?php if (!empty($berkas['berkas_ktp_ibu'])) : ?>
-                                    <small class="text-success">File sudah diupload</small>
-                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
