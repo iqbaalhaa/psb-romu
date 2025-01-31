@@ -52,12 +52,7 @@ class Admin extends BaseController
     public function verifikasiPembayaran($id_pembayaran)
     {
         try {
-            // Debug: Log ID pembayaran
-            log_message('info', 'Verifikasi pembayaran ID: ' . $id_pembayaran);
-
-            $this->db->transStart();
-
-            // Ambil data pembayaran
+            // Ambil id_santri dari pembayaran terlebih dahulu
             $pembayaran = $this->ModelAdmin->getPembayaranById($id_pembayaran);
 
             if (!$pembayaran) {
@@ -65,30 +60,44 @@ class Admin extends BaseController
             }
 
             // Update status pembayaran
-            if (!$this->ModelAdmin->verifikasiPembayaran($id_pembayaran)) {
-                throw new \Exception('Gagal memverifikasi pembayaran');
+            $this->db->table('tbl_pembayaran')
+                ->where('id_pembayaran', $id_pembayaran)
+                ->update([
+                    'status_pembayaran' => 2, // 2 = Lunas
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+
+            // Update status santri
+            $this->db->table('tbl_santri')
+                ->where('id_santri', $pembayaran['id_santri'])
+                ->update([
+                    'status_pembayaran' => 2, // 2 = Lunas
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+
+            session()->setFlashdata('success', 'Pembayaran berhasil diverifikasi');
+
+            // Redirect berdasarkan jenjang
+            $jenjang = $this->ModelAdmin->getJenjangSantri($pembayaran['id_santri']);
+            if ($jenjang == 'MA') {
+                return redirect()->to(base_url('Admin/PembayaranMA'));
+            } else {
+                return redirect()->to(base_url('Admin/PembayaranMTs'));
             }
-
-            $this->db->transComplete();
-
-            if ($this->db->transStatus() === false) {
-                throw new \Exception('Gagal memverifikasi pembayaran');
-            }
-
-            session()->setFlashdata('pesan', 'Pembayaran berhasil diverifikasi');
         } catch (\Exception $e) {
             log_message('error', 'Error verifikasi pembayaran: ' . $e->getMessage());
             session()->setFlashdata('error', $e->getMessage());
+            return redirect()->back();
         }
+    }
 
-        // Redirect berdasarkan jenjang santri
-        $jenjang = $this->ModelAdmin->getJenjangSantri($pembayaran['id_santri']);
-
-        if ($jenjang == 'MA') {
-            return redirect()->to('Admin/PembayaranMA');
-        } else {
-            return redirect()->to('Admin/PembayaranMTs');
-        }
+    private function updateStatusDashboardSantri($id_santri)
+    {
+        // Logika untuk memperbarui status di dashboard santri
+        // Misalnya, update status di tabel santri
+        $this->db->table('tbl_santri')
+            ->where('id_santri', $id_santri)
+            ->update(['status_pembayaran' => 1]); // 1 berarti sudah dibayar
     }
 
     public function tolakPembayaran($id_pembayaran)

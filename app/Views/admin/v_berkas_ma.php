@@ -86,3 +86,28 @@
 </div>
 
 <?= $this->endSection() ?>
+
+<?= $this->section('scripts') ?>
+<script>
+    $(document).ready(function() {
+        $('#tabelBerkas').DataTable();
+    });
+
+    function verifikasiBerkas(id) {
+        Swal.fire({
+            title: 'Verifikasi Berkas',
+            text: "Apakah semua berkas sudah valid?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Ya, Verifikasi',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '<?= base_url('Admin/verifikasiBerkas') ?>/' + id;
+            }
+        });
+    }
+</script>
+<?= $this->endSection() ?>

@@ -32,35 +32,43 @@ class ModelAdmin extends Model
 
     public function verifikasiPembayaran($id_pembayaran)
     {
-        $db = \Config\Database::connect();
-        $db->transStart();
         try {
-            // Update status pembayaran
-            $this->db->table('tbl_pembayaran')
+            $db = \Config\Database::connect();
+            $db->transStart();
+
+            // Dapatkan data pembayaran
+            $pembayaran = $this->getPembayaranById($id_pembayaran);
+
+            if (!$pembayaran) {
+                throw new \Exception('Data pembayaran tidak ditemukan');
+            }
+
+            // Update status di tabel pembayaran
+            $db->table('tbl_pembayaran')
                 ->where('id_pembayaran', $id_pembayaran)
                 ->update([
-                    'status_pembayaran' => 2,
+                    'status_pembayaran' => 2, // 2 = Lunas
                     'updated_at' => date('Y-m-d H:i:s')
                 ]);
 
-            // Dapatkan id_santri dari pembayaran
-            $pembayaran = $this->getPembayaranById($id_pembayaran);
-
-            if ($pembayaran) {
-                // Update status pendaftaran santri
-                $this->db->table('tbl_santri')
-                    ->where('id_santri', $pembayaran['id_santri'])
-                    ->update([
-                        'status_pendaftaran' => 'Pembayaran Terverifikasi',
-                        'updated_at' => date('Y-m-d H:i:s')
-                    ]);
-            }
+            // Update status di tabel santri
+            $db->table('tbl_santri')
+                ->where('id_santri', $pembayaran['id_santri'])
+                ->update([
+                    'status_pembayaran' => 2, // 2 = Lunas
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
 
             $db->transComplete();
-            return $db->transStatus();
+
+            if ($db->transStatus() === false) {
+                throw new \Exception('Gagal memverifikasi pembayaran');
+            }
+
+            return true;
         } catch (\Exception $e) {
-            $db->transRollback();
-            throw $e;
+            log_message('error', 'Error verifikasi pembayaran: ' . $e->getMessage());
+            return false;
         }
     }
 

@@ -64,14 +64,12 @@
                                 </td>
                                 <td class="text-center">
                                     <?php if ($row['status_pembayaran'] == 1) : ?>
-                                        <button type="button"
-                                            class="btn btn-success btn-sm"
-                                            onclick="javascript:window.verifikasiPembayaran(<?= $row['id_pembayaran'] ?>);">
+                                        <button onclick="verifikasiPembayaran(<?= $row['id_pembayaran'] ?>)"
+                                            class="btn btn-success btn-sm">
                                             <i class="fas fa-check"></i> Verifikasi
                                         </button>
-                                        <button type="button"
-                                            class="btn btn-danger btn-sm"
-                                            onclick="javascript:window.tolakPembayaran(<?= $row['id_pembayaran'] ?>);">
+                                        <button onclick="tolakPembayaran(<?= $row['id_pembayaran'] ?>)"
+                                            class="btn btn-danger btn-sm">
                                             <i class="fas fa-times"></i> Tolak
                                         </button>
                                     <?php endif; ?>
@@ -88,11 +86,12 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
-<script type="text/javascript">
-    // Definisikan fungsi sebagai variabel global
-    window.verifikasiPembayaran = function(id) {
-        console.log('Verifikasi ID:', id); // Debug log
+<script>
+    $(document).ready(function() {
+        $('#tabelPembayaran').DataTable();
+    });
 
+    function verifikasiPembayaran(id) {
         Swal.fire({
             title: 'Verifikasi Pembayaran',
             text: "Apakah pembayaran ini sudah valid?",
@@ -104,15 +103,12 @@
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Redirect dengan JavaScript
                 window.location.href = '<?= base_url('Admin/verifikasiPembayaran') ?>/' + id;
             }
         });
-    };
+    }
 
-    window.tolakPembayaran = function(id) {
-        console.log('Tolak ID:', id); // Debug log
-
+    function tolakPembayaran(id) {
         Swal.fire({
             title: 'Tolak Pembayaran',
             text: "Masukkan alasan penolakan:",
@@ -130,21 +126,9 @@
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                // Redirect dengan JavaScript
                 window.location.href = '<?= base_url('Admin/tolakPembayaran') ?>/' + id + '?alasan=' + encodeURIComponent(result.value);
             }
         });
-    };
-
-    $(document).ready(function() {
-        // DataTables initialization
-        $('#tabelPembayaran').DataTable();
-
-        // Filter handling
-        $('#filterStatus').change(function() {
-            var status = $(this).val();
-            window.location.href = '<?= base_url('Admin/PembayaranMA') ?>?status=' + status;
-        });
-    });
+    }
 </script>
 <?= $this->endSection() ?>
