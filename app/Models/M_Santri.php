@@ -171,4 +171,29 @@ class M_Santri extends Model
             ->get()
             ->getRowArray();
     }
+
+    public function hitungPersentaseBerkas($id_santri)
+    {
+        try {
+            $berkas = $this->getBerkas($id_santri);
+            if (!$berkas) {
+                return 0;
+            }
+
+            $totalField = 5; // Jumlah total berkas yang harus diupload
+            $fieldTerisi = 0;
+
+            // Hitung berkas yang sudah diupload
+            if (!empty($berkas['kartu_keluarga'])) $fieldTerisi++;
+            if (!empty($berkas['akta_kelahiran'])) $fieldTerisi++;
+            if (!empty($berkas['foto'])) $fieldTerisi++;
+            if (!empty($berkas['ijazah'])) $fieldTerisi++;
+            if (!empty($berkas['ktp_ortu'])) $fieldTerisi++;
+
+            return ($fieldTerisi / $totalField) * 100;
+        } catch (\Exception $e) {
+            log_message('error', 'Error hitungPersentaseBerkas: ' . $e->getMessage());
+            return 0;
+        }
+    }
 }

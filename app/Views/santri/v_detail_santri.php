@@ -30,6 +30,10 @@
                                 <input type="text" class="form-control" value="<?= $santri['no_pendaftaran'] ?? 'Data tidak tersedia' ?>" readonly>
                             </div>
                             <div class="form-group">
+                                <label>NISN</label>
+                                <input type="text" name="nisn" class="form-control" value="<?= $santri['nisn'] ?? '' ?>">
+                            </div>
+                            <div class="form-group">
                                 <label>Asal Sekolah</label>
                                 <input type="text" class="form-control" value="<?= $santri['asal_sekolah'] ?? '' ?>" readonly>
                             </div>
@@ -65,10 +69,6 @@
                             <div class="form-group">
                                 <label>Agama</label>
                                 <input type="text" class="form-control" value="Islam" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>NISN</label>
-                                <input type="text" name="nisn" class="form-control" value="<?= $santri['nisn'] ?? '' ?>">
                             </div>
                             <div class="form-group">
                                 <label>Jalur Pendaftaran</label>

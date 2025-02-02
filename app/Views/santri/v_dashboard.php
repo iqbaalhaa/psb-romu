@@ -64,7 +64,18 @@
                     <span class="info-box-icon bg-info elevation-1"><i class="fas fa-file-alt"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">Kelengkapan Berkas</span>
-                        <span class="info-box-number"><?= $persentase_berkas ?? '0' ?>%</span>
+                        <div class="progress progress-sm">
+                            <div class="progress-bar bg-info" role="progressbar"
+                                style="width: <?= $persentase_berkas ?? '0' ?>%"
+                                height="30px"
+                                aria-valuenow="<?= $persentase_berkas ?? '0' ?>"
+                                aria-valuemin="0"
+                                aria-valuemax="100">
+                            </div>
+                        </div>
+                        <span class="info-box-number mt-1">
+                            <?= $persentase_berkas ?? '0' ?>% Lengkap
+                        </span>
                     </div>
                 </div>
             </div>

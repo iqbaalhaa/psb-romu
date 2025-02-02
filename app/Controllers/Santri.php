@@ -21,10 +21,14 @@ class Santri extends BaseController
     {
         $id_santri = session()->get('id_santri');
 
+        // Hitung persentase kelengkapan berkas
+        $persentase_berkas = $this->M_Santri->hitungPersentaseBerkas($id_santri);
+
         $data = [
             'title' => 'Dashboard',
             'subtitle' => 'Dashboard Santri',
-            'santri' => $this->M_Santri->getSantriDetail($id_santri)
+            'santri' => $this->M_Santri->getSantriDetail($id_santri),
+            'persentase_berkas' => round($persentase_berkas) // Bulatkan persentase
         ];
 
         return view('santri/v_dashboard', $data);
@@ -231,5 +235,26 @@ class Santri extends BaseController
         // die();
 
         return view('santri/v_detail_santri', $data);
+    }
+
+    public function CetakKartu()
+    {
+        $id_santri = session()->get('id_santri');
+
+        // Ambil data santri lengkap
+        $data = [
+            'title' => 'Cetak Kartu Pendaftaran',
+            'santri' => $this->M_Santri->getSantriDetail($id_santri),
+            'berkas' => $this->M_Santri->getBerkas($id_santri),
+            'pembayaran' => $this->M_Santri->getPembayaran($id_santri)
+        ];
+
+        // Cek status pembayaran
+        if (!$data['pembayaran'] || $data['pembayaran']['status_pembayaran'] != 2) {
+            session()->setFlashdata('error', 'Anda harus menyelesaikan pembayaran terlebih dahulu');
+            return redirect()->to('Santri');
+        }
+
+        return view('santri/v_cetak_kartu', $data);
     }
 }
