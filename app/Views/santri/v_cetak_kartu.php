@@ -11,12 +11,12 @@
         }
 
         .kartu {
-            width: 800px;
+            width: 480px;
             margin: 0 auto;
             padding: 20px;
             border: 30px solid transparent;
-            border-image: url('<?= base_url('assets/images/frame.png') ?>') 30 stretch;
-            border-image-slice: 30 fill;
+            border-image: url('<?= base_url('assets/frame.png') ?>') 30 stretch;
+            border-image-slice: 50 fill;
         }
 
         .header {
@@ -28,6 +28,7 @@
         .logo {
             width: 80px;
             height: auto;
+            margin-top: 25px;
         }
 
         .foto {
@@ -39,12 +40,12 @@
         }
 
         .info {
-            margin: 20px 40px;
+            margin-bottom: 100px;
         }
 
-        .info table {
-            width: 100%;
-        }
+        /* .info table {
+            width: 90%;
+        } */
 
         .info td {
             padding: 5px;
@@ -73,7 +74,7 @@
 
     <div class="kartu">
         <div class="header">
-            <img src="<?= base_url('logo.png') ?>" class="logo">
+            <img src="<?= base_url('assets/romu.png') ?>" class="logo">
             <h2>KARTU PENDAFTARAN SANTRI</h2>
             <h3>PONDOK PESANTREN</h3>
             <p>Tahun Ajaran <?= date('Y') ?>/<?= date('Y') + 1 ?></p>
@@ -111,15 +112,6 @@
                 </tr>
             </table>
         </div>
-
-        <div class="footer">
-            <p>
-                <?= date('d F Y') ?><br>
-                Panitia PPDB<br><br><br>
-                ___________________
-            </p>
-        </div>
-    </div>
 </body>
 
 </html>
