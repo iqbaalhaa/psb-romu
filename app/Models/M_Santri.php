@@ -196,4 +196,19 @@ class M_Santri extends Model
             return 0;
         }
     }
+
+    public function getUserData($id_user)
+    {
+        return $this->db->table('tbl_user')
+            ->where('id_user', $id_user)
+            ->get()
+            ->getRowArray();
+    }
+
+    public function updatePassword($id_user, $data)
+    {
+        return $this->db->table('tbl_user')
+            ->where('id_user', $id_user)
+            ->update($data);
+    }
 }

@@ -88,10 +88,21 @@ class Auth extends BaseController
         return redirect()->back();
     }
 
-    public function Logout()
+    public function LogoutAdmin()
     {
-        $this->session->destroy();
-        session()->setFlashdata('pesan', 'Berhasil logout!');
+        // Hapus session
+        $session = session();
+        $session->remove(['id_user', 'nama_user', 'email', 'level', 'foto']);
+        $session->setFlashdata('pesan', 'Anda berhasil logout');
+        return redirect()->to(base_url());
+    }
+
+    public function LogoutUser()
+    {
+        // Hapus session
+        $session = session();
+        $session->remove(['id_user', 'nama_user', 'email', 'level', 'foto']);
+        $session->setFlashdata('pesan', 'Anda berhasil logout');
         return redirect()->to(base_url());
     }
 }

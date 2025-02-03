@@ -16,9 +16,9 @@ class Pendaftaran extends BaseController
     private function uploadFoto()
     {
         $foto = $this->request->getFile('foto');
-        if ($foto->isValid() && !$foto->hasMoved()) {
+        if ($foto && $foto->isValid() && !$foto->hasMoved()) {
             $newName = $foto->getRandomName();
-            $foto->move('foto/santri', $newName);
+            $foto->move(ROOTPATH . 'public/foto/santri', $newName);
             return $newName;
         }
         return 'default.jpg';
@@ -60,40 +60,50 @@ class Pendaftaran extends BaseController
         ];
 
         if (!$this->validate($rules)) {
-            session()->setFlashdata('pesan', $this->validator->listErrors());
+            session()->setFlashdata('error', $this->validator->listErrors());
             return redirect()->back()->withInput();
         }
 
-        // Upload foto
-        $foto = $this->uploadFoto();
+        try {
+            // Upload foto
+            $foto = $this->uploadFoto();
+            if (!$foto) {
+                session()->setFlashdata('error', 'Gagal upload foto');
+                return redirect()->back()->withInput();
+            }
 
-        // Data untuk tabel user
-        $data_user = [
-            'nama_user' => $this->request->getPost('nama_lengkap'),
-            'email' => $this->request->getPost('email'),
-            'password' => md5($this->request->getPost('password')),
-            'level' => 'santri',
-            'jenjang' => $jenjang,
-            'foto' => $foto
-        ];
+            // Data untuk tabel user
+            $data_user = [
+                'nama_user' => $this->request->getPost('nama_lengkap'),
+                'email' => $this->request->getPost('email'),
+                'password' => md5($this->request->getPost('password')),
+                'level' => 'santri',
+                'jenjang' => $jenjang,
+                'foto' => $foto
+            ];
 
-        // Data untuk tabel santri
-        $data_santri = [
-            'nisn' => $this->request->getPost('nisn'),
-            'nama_lengkap' => $this->request->getPost('nama_lengkap'),
-            'tempat_lahir' => $this->request->getPost('tempat_lahir'),
-            'tgl_lahir' => $this->request->getPost('tgl_lahir'),
-            'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
-            'no_hp' => $this->request->getPost('no_hp'),
-            'asal_sekolah' => $this->request->getPost('asal_sekolah'),
-            'jenjang' => $jenjang
-        ];
+            // Data untuk tabel santri
+            $data_santri = [
+                'nisn' => $this->request->getPost('nisn'),
+                'nama_lengkap' => $this->request->getPost('nama_lengkap'),
+                'tempat_lahir' => $this->request->getPost('tempat_lahir'),
+                'tgl_lahir' => $this->request->getPost('tgl_lahir'),
+                'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
+                'no_hp' => $this->request->getPost('no_hp'),
+                'asal_sekolah' => $this->request->getPost('asal_sekolah'),
+                'jenjang' => $jenjang
+            ];
 
-        if ($this->M_Pendaftaran->simpanPendaftaran($data_user, $data_santri)) {
-            session()->setFlashdata('success', 'Pendaftaran berhasil! Silahkan login untuk melengkapi data.');
-            return redirect()->to(base_url());
-        } else {
-            session()->setFlashdata('pesan', 'Terjadi kesalahan saat mendaftar. Silahkan coba lagi.');
+            if ($this->M_Pendaftaran->simpanPendaftaran($data_user, $data_santri)) {
+                session()->setFlashdata('success', 'Pendaftaran berhasil! Silahkan login untuk melengkapi data.');
+                return redirect()->to(base_url());
+            } else {
+                session()->setFlashdata('pesan', 'Terjadi kesalahan saat mendaftar. Silahkan coba lagi.');
+                return redirect()->back()->withInput();
+            }
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
+            session()->setFlashdata('error', 'Terjadi kesalahan sistem. Silahkan coba lagi nanti.');
             return redirect()->back()->withInput();
         }
     }

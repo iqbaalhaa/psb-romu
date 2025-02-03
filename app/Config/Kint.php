@@ -2,10 +2,12 @@
 
 namespace Config;
 
+use CodeIgniter\Config\BaseConfig;
 use Kint\Parser\ConstructablePluginInterface;
 use Kint\Renderer\AbstractRenderer;
 use Kint\Renderer\Rich\TabPluginInterface;
 use Kint\Renderer\Rich\ValuePluginInterface;
+use Kint\Kint as KintDebugger;
 
 /**
  * --------------------------------------------------------------------------
@@ -17,7 +19,7 @@ use Kint\Renderer\Rich\ValuePluginInterface;
  *
  * @see https://kint-php.github.io/kint/ for details on these settings.
  */
-class Kint
+class Kint extends BaseConfig
 {
     /*
     |--------------------------------------------------------------------------
@@ -30,9 +32,9 @@ class Kint
      */
     public $plugins;
 
-    public int $maxDepth           = 6;
-    public bool $displayCalledFrom = true;
-    public bool $expanded          = false;
+    public $maxDepth = 6;
+    public $displayCalledFrom = true;
+    public $expanded = false;
 
     /*
     |--------------------------------------------------------------------------
@@ -41,7 +43,7 @@ class Kint
     */
     public string $richTheme = 'aante-light.css';
     public bool $richFolder  = false;
-    public int $richSort     = AbstractRenderer::SORT_FULL;
+    public int $richSort     = 0;
 
     /**
      * @var array<string, class-string<ValuePluginInterface>>|null
@@ -62,4 +64,24 @@ class Kint
     public bool $cliForceUTF8   = false;
     public bool $cliDetectWidth = true;
     public int $cliMinWidth     = 40;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Disable Kint in production
+        if (ENVIRONMENT === 'production') {
+            KintDebugger::$enabled_mode = false;
+        }
+
+        KintDebugger::$depth_limit = $this->maxDepth;
+
+        if (! $this->displayCalledFrom) {
+            KintDebugger::$display_called_from = false;
+        }
+
+        if ($this->expanded) {
+            KintDebugger::$expanded = true;
+        }
+    }
 }

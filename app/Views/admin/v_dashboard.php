@@ -5,9 +5,9 @@
 <!-- Main content -->
 <section class="content container-fluid px-4">
     <!-- Info boxes -->
-    <div class="row mb-3">
+    <div class="row mb-4">
         <div class="col-12">
-            <div class="alert alert-success shadow-sm">
+            <div class="alert alert-custom shadow-sm">
                 <h5><i class="icon fas fa-check"></i> Selamat Datang! <?= session()->get('nama_user') ?></h5>
                 <p class="mb-0">Anda login sebagai Administrator. Kelola sistem pendaftaran dengan bijak.</p>
             </div>
@@ -15,112 +15,136 @@
     </div>
 
     <!-- Data MTs -->
-    <h4 class="mb-3">Data Pendaftaran MTs</h4>
-    <div class="row mb-4">
-        <div class="col-lg-3 col-6">
-            <div class="info-box shadow hover-effect">
-                <span class="info-box-icon bg-success"><i class="fas fa-users"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Total Pendaftar</span>
-                    <span class="info-box-number">
-                        <?= isset($total_mts) ? number_format($total_mts) : 0 ?>
-                        <small>Santri</small>
-                    </span>
+    <div class="section-header mb-4">
+        <h4 class="section-title">Data Pendaftaran MTs</h4>
+        <div class="section-line"></div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-lg-3 col-md-6">
+            <div class="stat-card bg-gradient-primary">
+                <div class="stat-card-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-card-info">
+                    <div class="stat-card-title">Total Pendaftar</div>
+                    <div class="stat-card-number">
+                        <?= number_format($total_mts ?? 0) ?>
+                        <span class="stat-suffix">Santri</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-3 col-6">
-            <div class="info-box shadow hover-effect">
-                <span class="info-box-icon bg-info"><i class="fas fa-clock"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Menunggu Verifikasi</span>
-                    <span class="info-box-number">
-                        <?= isset($pending_mts) ? number_format($pending_mts) : 0 ?>
-                        <small>Santri</small>
-                    </span>
+        <div class="col-lg-3 col-md-6">
+            <div class="stat-card bg-gradient-info">
+                <div class="stat-card-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-card-info">
+                    <div class="stat-card-title">Menunggu Verifikasi</div>
+                    <div class="stat-card-number">
+                        <?= number_format($pending_mts ?? 0) ?>
+                        <span class="stat-suffix">Santri</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-3 col-6">
-            <div class="info-box shadow hover-effect">
-                <span class="info-box-icon bg-warning"><i class="fas fa-money-bill"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Belum Bayar</span>
-                    <span class="info-box-number">
-                        <?= isset($unpaid_mts) ? number_format($unpaid_mts) : 0 ?>
-                        <small>Santri</small>
-                    </span>
+        <div class="col-lg-3 col-md-6">
+            <div class="stat-card bg-gradient-warning">
+                <div class="stat-card-icon">
+                    <i class="fas fa-money-bill"></i>
+                </div>
+                <div class="stat-card-info">
+                    <div class="stat-card-title">Belum Bayar</div>
+                    <div class="stat-card-number">
+                        <?= number_format($unpaid_mts ?? 0) ?>
+                        <span class="stat-suffix">Santri</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-3 col-6">
-            <div class="info-box shadow hover-effect">
-                <span class="info-box-icon bg-success"><i class="fas fa-check-circle"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Terverifikasi</span>
-                    <span class="info-box-number">
-                        <?= isset($verified_mts) ? number_format($verified_mts) : 0 ?>
-                        <small>Santri</small>
-                    </span>
+        <div class="col-lg-3 col-md-6">
+            <div class="stat-card bg-gradient-success">
+                <div class="stat-card-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-card-info">
+                    <div class="stat-card-title">Terverifikasi</div>
+                    <div class="stat-card-number">
+                        <?= number_format($verified_mts ?? 0) ?>
+                        <span class="stat-suffix">Santri</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Data MA -->
-    <h4 class="mb-3">Data Pendaftaran MA</h4>
+    <div class="section-header mb-4">
+        <h4 class="section-title">Data Pendaftaran MA</h4>
+        <div class="section-line"></div>
+    </div>
+
     <div class="row">
-        <div class="col-lg-3 col-6">
-            <div class="info-box shadow hover-effect">
-                <span class="info-box-icon bg-success"><i class="fas fa-users"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Total Pendaftar</span>
-                    <span class="info-box-number">
-                        <?= isset($total_ma) ? number_format($total_ma) : 0 ?>
-                        <small>Santri</small>
-                    </span>
+        <div class="col-lg-3 col-md-6">
+            <div class="stat-card bg-gradient-primary">
+                <div class="stat-card-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-card-info">
+                    <div class="stat-card-title">Total Pendaftar</div>
+                    <div class="stat-card-number">
+                        <?= number_format($total_ma ?? 0) ?>
+                        <span class="stat-suffix">Santri</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-3 col-6">
-            <div class="info-box shadow hover-effect">
-                <span class="info-box-icon bg-info"><i class="fas fa-clock"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Menunggu Verifikasi</span>
-                    <span class="info-box-number">
-                        <?= isset($pending_ma) ? number_format($pending_ma) : 0 ?>
-                        <small>Santri</small>
-                    </span>
+        <div class="col-lg-3 col-md-6">
+            <div class="stat-card bg-gradient-info">
+                <div class="stat-card-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-card-info">
+                    <div class="stat-card-title">Menunggu Verifikasi</div>
+                    <div class="stat-card-number">
+                        <?= number_format($pending_ma ?? 0) ?>
+                        <span class="stat-suffix">Santri</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-3 col-6">
-            <div class="info-box shadow hover-effect">
-                <span class="info-box-icon bg-warning"><i class="fas fa-money-bill"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Belum Bayar</span>
-                    <span class="info-box-number">
-                        <?= isset($unpaid_ma) ? number_format($unpaid_ma) : 0 ?>
-                        <small>Santri</small>
-                    </span>
+        <div class="col-lg-3 col-md-6">
+            <div class="stat-card bg-gradient-warning">
+                <div class="stat-card-icon">
+                    <i class="fas fa-money-bill"></i>
+                </div>
+                <div class="stat-card-info">
+                    <div class="stat-card-title">Belum Bayar</div>
+                    <div class="stat-card-number">
+                        <?= number_format($unpaid_ma ?? 0) ?>
+                        <span class="stat-suffix">Santri</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-3 col-6">
-            <div class="info-box shadow hover-effect">
-                <span class="info-box-icon bg-success"><i class="fas fa-check-circle"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Terverifikasi</span>
-                    <span class="info-box-number">
-                        <?= isset($verified_ma) ? number_format($verified_ma) : 0 ?>
-                        <small>Santri</small>
-                    </span>
+        <div class="col-lg-3 col-md-6">
+            <div class="stat-card bg-gradient-success">
+                <div class="stat-card-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-card-info">
+                    <div class="stat-card-title">Terverifikasi</div>
+                    <div class="stat-card-number">
+                        <?= number_format($verified_ma ?? 0) ?>
+                        <span class="stat-suffix">Santri</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -128,101 +152,141 @@
 </section>
 
 <style>
-    .hover-effect {
-        transition: all 0.3s ease;
-    }
-
-    .hover-effect:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
-    }
-
-    .info-box {
-        min-height: 140px;
-        background: #ffffff;
+    .alert-custom {
         border-radius: 15px;
-        margin-bottom: 20px;
+        border-left: 5px solid #004d40;
+        background-color: #ffffff;
         padding: 20px;
+        margin-bottom: 30px;
+    }
+
+    .alert-custom h5 {
+        color: #004d40;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .section-header {
+        position: relative;
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        color: #004d40;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .section-line {
+        width: 50px;
+        height: 3px;
+        background: #004d40;
+        margin-top: 10px;
+    }
+
+    .stat-card {
         display: flex;
         align-items: center;
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+        color: white;
+        height: 140px;
         width: 100%;
     }
 
-    .info-box-icon {
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-card-icon {
+        min-width: 60px;
+        height: 60px;
         border-radius: 12px;
-        width: 80px;
-        height: 80px;
+        background: rgba(255, 255, 255, 0.2);
         display: flex;
         align-items: center;
         justify-content: center;
         margin-right: 20px;
+        flex-shrink: 0;
     }
 
-    .info-box-icon i {
-        font-size: 2.5rem;
-        color: #ffffff;
+    .stat-card-icon i {
+        font-size: 28px;
+        color: white;
     }
 
-    .info-box-content {
-        padding-top: 5px;
-        flex-grow: 1;
+    .stat-card-info {
+        flex: 1;
+        min-width: 0;
     }
 
-    .info-box-text {
-        font-size: 1rem;
+    .stat-card-title {
+        font-size: 14px;
+        opacity: 0.9;
+        margin-bottom: 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .stat-card-number {
+        font-size: 24px;
         font-weight: 600;
-        color: #28a745;
-        margin-bottom: 10px;
+        line-height: 1.2;
     }
 
-    .info-box-number {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #28a745;
-    }
-
-    .info-box-number small {
-        font-size: 1.1rem;
-        color: #666;
+    .stat-suffix {
+        font-size: 14px;
+        opacity: 0.9;
         margin-left: 5px;
+        white-space: nowrap;
     }
 
-    .alert-success {
-        border-radius: 15px;
-        border-left: 5px solid #28a745;
-        background-color: #ffffff;
+    .bg-gradient-primary {
+        background: linear-gradient(45deg, #004d40, #00695c);
     }
 
-    .alert-success h5 {
-        color: #28a745;
-        font-weight: 600;
+    .bg-gradient-info {
+        background: linear-gradient(45deg, #0288d1, #039be5);
     }
 
-    .alert-success p {
-        color: #666;
+    .bg-gradient-warning {
+        background: linear-gradient(45deg, #f57c00, #fb8c00);
     }
 
-    .bg-success {
-        background-color: #28a745 !important;
+    .bg-gradient-success {
+        background: linear-gradient(45deg, #2e7d32, #388e3c);
     }
 
     @media (max-width: 768px) {
-        .info-box {
-            min-height: 120px;
+        .stat-card {
+            height: 120px;
             padding: 15px;
         }
 
-        .info-box-icon {
-            width: 70px;
-            height: 70px;
+        .stat-card-icon {
+            min-width: 50px;
+            height: 50px;
         }
 
-        .info-box-text {
-            font-size: 1.1rem;
+        .stat-card-icon i {
+            font-size: 20px;
         }
 
-        .info-box-number {
-            font-size: 1.6rem;
+        .stat-card-title {
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .stat-card-number {
+            font-size: 18px;
+        }
+
+        .stat-suffix {
+            font-size: 12px;
         }
     }
 </style>

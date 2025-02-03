@@ -70,8 +70,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= base_url('Auth/LogoutUser') ?>" class="btn btn-danger" title="Logout">
-                        <i class="fas fa-sign-out-alt"></i>
+                    <a href="<?= base_url('Auth/LogoutUser') ?>" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin keluar?')">
+                        <i class="fas fa-power-off"></i>
                     </a>
                 </li>
             </ul>
@@ -81,7 +81,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #1e7e34;">
             <!-- Brand Logo -->
-            <a href="<?= base_url('Admin') ?>" class="brand-link" style="background-color: #28a745;">
+            <a href="<?= base_url('Santri') ?>" class="brand-link" style="background-color: #28a745;">
                 <img src="<?= base_url() ?>/assets/romu.png" alt="AdminLTE Logo" class="brand-image">
                 <span class="brand-text font-weight-bold text-white">PSB ROMU</span>
             </a>

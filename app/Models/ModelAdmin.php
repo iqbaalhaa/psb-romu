@@ -123,4 +123,31 @@ class ModelAdmin extends Model
             ->get()
             ->getRowArray()['jenjang'];
     }
+
+    public function getAllUsers()
+    {
+        return $this->db->table('tbl_user')
+            ->where('level', 'admin', 'santri')
+            ->get()
+            ->getResultArray();
+    }
+
+    public function insertUser($data)
+    {
+        return $this->db->table('tbl_user')->insert($data);
+    }
+
+    public function updateUser($id, $data)
+    {
+        return $this->db->table('tbl_user')
+            ->where('id_user', $id)
+            ->update($data);
+    }
+
+    public function deleteUser($id)
+    {
+        return $this->db->table('tbl_user')
+            ->where('id_user', $id)
+            ->delete();
+    }
 }

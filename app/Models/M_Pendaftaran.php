@@ -8,7 +8,7 @@ class M_Pendaftaran extends Model
 {
     protected $table = 'tbl_user';
     protected $primaryKey = 'id_user';
-    protected $allowedFields = ['nama_user', 'email', 'password', 'level', 'jenjang'];
+    protected $allowedFields = ['nama_user', 'email', 'password', 'level', 'jenjang', 'foto'];
 
     public function simpanPendaftaran($data_user, $data_santri)
     {

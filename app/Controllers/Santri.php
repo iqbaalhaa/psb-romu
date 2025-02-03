@@ -221,18 +221,24 @@ class Santri extends BaseController
     {
         $id_santri = session()->get('id_santri');
 
-        // Gunakan M_Santri yang sudah ada
+        // Log untuk debugging
+        log_message('debug', 'Session Data: ' . json_encode(session()->get()));
+
+        // Ambil data santri
+        $santri = $this->M_Santri->getSantriDetail($id_santri);
+        $detail = $this->M_Santri->DetailDataOrangTua($id_santri);
+
+        // Log data yang diambil
+        log_message('debug', 'Santri Data: ' . json_encode($santri));
+        log_message('debug', 'Detail Data: ' . json_encode($detail));
+
         $data = [
             'title' => 'Detail Santri',
             'subtitle' => 'Detail Santri',
-            'santri' => $this->M_Santri->getSantriByUserId($id_santri),
-            'detail' => $this->M_Santri->DetailDataOrangTua($id_santri),
+            'santri' => $santri,
+            'detail' => $detail,
             'berkas' => $this->M_Santri->getBerkas($id_santri)
         ];
-
-        // Debugging
-        // var_dump($data['santri']);
-        // die();
 
         return view('santri/v_detail_santri', $data);
     }
@@ -240,12 +246,13 @@ class Santri extends BaseController
     public function CetakKartu()
     {
         $id_santri = session()->get('id_santri');
+        $id_user = session()->get('id_user');
 
-        // Ambil data santri lengkap
+        // Ambil data santri dan user
         $data = [
             'title' => 'Cetak Kartu Pendaftaran',
             'santri' => $this->M_Santri->getSantriDetail($id_santri),
-            'berkas' => $this->M_Santri->getBerkas($id_santri),
+            'user' => $this->M_Santri->getUserData($id_user), // Tambahkan ini untuk mengambil data user termasuk foto
             'pembayaran' => $this->M_Santri->getPembayaran($id_santri)
         ];
 
@@ -256,5 +263,63 @@ class Santri extends BaseController
         }
 
         return view('santri/v_cetak_kartu', $data);
+    }
+
+    public function GantiPassword()
+    {
+        $data = [
+            'title' => 'Ganti Password',
+            'subtitle' => 'Ganti Password'
+        ];
+        return view('santri/v_ganti_password', $data);
+    }
+
+    public function updatePassword()
+    {
+        $rules = [
+            'password_lama' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Password lama harus diisi!'
+                ]
+            ],
+            'password_baru' => [
+                'rules' => 'required|min_length[6]',
+                'errors' => [
+                    'required' => 'Password baru harus diisi!',
+                    'min_length' => 'Password minimal 6 karakter!'
+                ]
+            ],
+            'konfirmasi_password' => [
+                'rules' => 'required|matches[password_baru]',
+                'errors' => [
+                    'required' => 'Konfirmasi password harus diisi!',
+                    'matches' => 'Konfirmasi password tidak cocok!'
+                ]
+            ]
+        ];
+
+        if (!$this->validate($rules)) {
+            session()->setFlashdata('errors', $this->validator->getErrors());
+            return redirect()->back()->withInput();
+        }
+
+        // Ambil data user dari session
+        $id_user = session()->get('id_user');
+        $user = $this->M_Santri->getUserData($id_user);
+        $password_lama = md5($this->request->getPost('password_lama'));
+
+        if ($password_lama !== $user['password']) {
+            session()->setFlashdata('error', 'Password lama salah!');
+            return redirect()->back();
+        }
+
+        // Update password
+        $this->M_Santri->updatePassword($id_user, [
+            'password' => md5($this->request->getPost('password_baru'))
+        ]);
+
+        session()->setFlashdata('pesan', 'Password berhasil diubah!');
+        return redirect()->to('Santri/GantiPassword');
     }
 }

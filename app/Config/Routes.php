@@ -25,6 +25,10 @@ $routes->group('Admin', ['filter' => 'filteradmin'], function ($routes) {
     $routes->get('BerkasMTs', 'Admin::BerkasMTs');
     $routes->get('BerkasMA', 'Admin::BerkasMA');
     $routes->get('verifikasiBerkas/(:num)', 'Admin::verifikasiBerkas/$1');
+    $routes->get('Pengumuman', 'Pengumuman::index');
+    $routes->post('Pengumuman/add', 'Pengumuman::add');
+    $routes->post('Pengumuman/edit/(:num)', 'Pengumuman::edit/$1');
+    $routes->get('Pengumuman/delete/(:num)', 'Pengumuman::delete/$1');
     // ... route admin lainnya ...
 });
 
@@ -36,6 +40,7 @@ $routes->group('Santri', ['filter' => 'filtersantri'], function ($routes) {
     $routes->post('uploadBuktiPembayaran', 'Santri::uploadBuktiPembayaran');
     $routes->get('Berkas', 'Santri::Berkas');
     $routes->post('uploadBerkas', 'Santri::uploadBerkas');
+    $routes->get('Pengumuman', 'Pengumuman::pengumumanSantri');
     // ... route santri lainnya ...
 });
 

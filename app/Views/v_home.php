@@ -242,7 +242,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </button>
                 </div>
                 <div class="modal-body">
-                    <?= form_open('Pendaftaran/SimpanMTs') ?>
+                    <?= form_open_multipart('Pendaftaran/SimpanMTs', ['class' => 'needs-validation']) ?>
                     <!-- Data Akun -->
                     <h5 class="border-bottom pb-2">Data Akun</h5>
                     <div class="form-group">
@@ -327,7 +327,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </button>
                 </div>
                 <div class="modal-body">
-                    <?= form_open('Pendaftaran/SimpanMA') ?>
+                    <?= form_open_multipart('Pendaftaran/SimpanMA', ['class' => 'needs-validation']) ?>
                     <!-- Data Akun -->
                     <h5 class="border-bottom pb-2">Data Akun</h5>
                     <div class="form-group">
@@ -419,7 +419,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" name="password" class="form-control" required>
+                        <div class="input-group">
+                            <input type="password" name="password" class="form-control" id="password_login" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text" onclick="togglePassword('password_login')" style="cursor: pointer;">
+                                    <i class="fas fa-eye" id="icon_password_login"></i>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-success btn-block">Login</button>
                     <?= form_close() ?>
@@ -432,6 +439,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="<?= base_url() ?>/AdminLTE/plugins/jquery/jquery.min.js"></script>
     <script src="<?= base_url() ?>/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="<?= base_url() ?>/AdminLTE/dist/js/adminlte.min.js"></script>
+    <script>
+        function togglePassword(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const icon = document.getElementById('icon_' + inputId);
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    </script>
 </body>
 
 </html>

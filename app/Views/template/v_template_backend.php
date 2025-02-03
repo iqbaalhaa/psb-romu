@@ -68,8 +68,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= base_url('Auth/LogoutAdmin') ?>" class="btn btn-danger">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                    <a href="<?= base_url('Auth/LogoutAdmin') ?>" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin keluar?')">
+                        <i class="fas fa-power-off"></i> Logout
                     </a>
                 </li>
             </ul>
@@ -150,6 +150,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                         <!-- Pengaturan -->
                         <li class="nav-header">PENGATURAN</li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('Pengumuman') ?>" class="nav-link">
+                                <i class="nav-icon fas fa-calendar"></i>
+                                <p>Pengumuman</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="<?= base_url('Admin/TahunAjaran') ?>" class="nav-link">
                                 <i class="nav-icon fas fa-calendar"></i>

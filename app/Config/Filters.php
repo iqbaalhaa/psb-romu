@@ -38,6 +38,7 @@ class Filters extends BaseFilters
         'filterauth'    => \App\Filters\FilterAuth::class,
         'filteradmin'   => \App\Filters\FilterAdmin::class,
         'filtersantri'  => \App\Filters\FilterSantri::class,
+        'auth'          => \App\Filters\FilterAdmin::class,
     ];
 
     /**
@@ -117,6 +118,10 @@ class Filters extends BaseFilters
             'before' => [
                 'Siswa/*'
             ]
-        ]
+        ],
+        'auth' => ['before' => [
+            'Admin/*',
+            'Admin'
+        ]]
     ];
 }

@@ -3,6 +3,7 @@
 <?= $this->section('content') ?>
 <div class="container-fluid">
     <h1>Detail Santri</h1>
+
     <?= form_open_multipart('Santri/UpdateBiodata') ?>
 
     <!-- Tab Navigation -->

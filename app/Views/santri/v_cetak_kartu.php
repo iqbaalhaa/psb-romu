@@ -80,8 +80,8 @@
             <p>Tahun Ajaran <?= date('Y') ?>/<?= date('Y') + 1 ?></p>
         </div>
 
-        <?php if (!empty($berkas['foto'])): ?>
-            <img src="<?= base_url('berkas/' . $berkas['foto']) ?>" class="foto">
+        <?php if (!empty($user['foto'])): ?>
+            <img src="<?= base_url('foto/santri/' . $user['foto']) ?>" class="foto" alt="Foto Santri">
         <?php else: ?>
             <div class="foto">
                 <p style="text-align: center;">Foto 3x4</p>
@@ -112,6 +112,15 @@
                 </tr>
             </table>
         </div>
+    </div>
+
+    <div class="no-print" style="margin-top: 20px; text-align: center;">
+        <?php
+        echo "Debug Info:<br>";
+        echo "Foto: " . ($user['foto'] ?? 'tidak ada') . "<br>";
+        echo "Path: " . base_url('foto/santri/' . ($user['foto'] ?? '')) . "<br>";
+        ?>
+    </div>
 </body>
 
 </html>
