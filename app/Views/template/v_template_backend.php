@@ -152,7 +152,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <li class="nav-header">PENGATURAN</li>
                         <li class="nav-item">
                             <a href="<?= base_url('Pengumuman') ?>" class="nav-link">
-                                <i class="nav-icon fas fa-calendar"></i>
+                                <i class="nav-icon fas fa-bullhorn"></i>
                                 <p>Pengumuman</p>
                             </a>
                         </li>

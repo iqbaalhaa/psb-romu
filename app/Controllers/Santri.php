@@ -5,15 +5,18 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\M_Santri;
 use App\Models\ModelSantri;
+use App\Models\M_Pengumuman;
 
 class Santri extends BaseController
 {
     protected $M_Santri;
+    protected $PengumumanModel;
 
     public function __construct()
     {
         $this->session = \Config\Services::session();
         $this->M_Santri = new M_Santri();
+        $this->PengumumanModel = new M_Pengumuman();
         helper(['form', 'url']);
     }
 
@@ -28,7 +31,9 @@ class Santri extends BaseController
             'title' => 'Dashboard',
             'subtitle' => 'Dashboard Santri',
             'santri' => $this->M_Santri->getSantriDetail($id_santri),
-            'persentase_berkas' => round($persentase_berkas) // Bulatkan persentase
+            'persentase_berkas' => round($persentase_berkas), // Bulatkan persentase
+            'pengumuman' => $this->M_Santri->getPengumuman(),
+            'jumlah_pengumuman' => $this->M_Santri->countPengumuman()
         ];
 
         return view('santri/v_dashboard', $data);

@@ -211,4 +211,17 @@ class M_Santri extends Model
             ->where('id_user', $id_user)
             ->update($data);
     }
+
+    public function getPengumuman()
+    {
+        return $this->db->table('pengumuman')
+            ->orderBy('tanggal', 'DESC')
+            ->get()
+            ->getResultArray();
+    }
+
+    public function countPengumuman()
+    {
+        return $this->db->table('pengumuman')->countAllResults();
+    }
 }

@@ -29,7 +29,7 @@ class Pengumuman extends BaseController
         $data = [
             'judul' => $this->request->getPost('judul'),
             'isi' => $this->request->getPost('isi'),
-            'tanggal' => date('Y-m-d')
+            'tanggal' => date('Y-m-d H:i:s')
         ];
 
         $this->PengumumanModel->insert($data);
