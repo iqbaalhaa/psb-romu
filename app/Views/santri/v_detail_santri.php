@@ -4,7 +4,25 @@
 <div class="container-fluid">
     <h1>Detail Santri</h1>
 
-    <?= form_open_multipart('Santri/UpdateBiodata') ?>
+    <?php if (session()->getFlashdata('success')) : ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?= session()->getFlashdata('success') ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->getFlashdata('error')) : ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?= session()->getFlashdata('error') ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    <?php endif; ?>
+
+    <?= form_open('Santri/UpdateBiodata') ?>
 
     <!-- Tab Navigation -->
     <ul class="nav nav-tabs" id="formTab" role="tablist">
@@ -28,23 +46,15 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>No. Pendaftaran</label>
-                                <input type="text" class="form-control" value="<?= $santri['no_pendaftaran'] ?? 'Data tidak tersedia' ?>" readonly>
+                                <input type="text" class="form-control" value="<?= $santri['no_pendaftaran'] ?? '' ?>" readonly>
                             </div>
                             <div class="form-group">
                                 <label>NISN</label>
                                 <input type="text" name="nisn" class="form-control" value="<?= $santri['nisn'] ?? '' ?>">
                             </div>
                             <div class="form-group">
-                                <label>Asal Sekolah</label>
-                                <input type="text" class="form-control" value="<?= $santri['asal_sekolah'] ?? '' ?>" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Tahun Ajaran</label>
-                                <input type="text" class="form-control" value="<?= $santri['tahun_daftar'] ?? '' ?>" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Gelombang Pendaftaran</label>
-                                <input type="text" class="form-control" value="Gelombang <?= $santri['gelombang'] ?? '' ?>" readonly>
+                                <label>NIK</label>
+                                <input type="text" name="nik" class="form-control" value="<?= $santri['nik'] ?? '' ?>">
                             </div>
                             <div class="form-group">
                                 <label>Nama Lengkap</label>
@@ -58,8 +68,6 @@
                                 <label>Tanggal Lahir</label>
                                 <input type="date" name="tgl_lahir" class="form-control" value="<?= $santri['tgl_lahir'] ?? '' ?>">
                             </div>
-                        </div>
-                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>Jenis Kelamin</label>
                                 <select name="jenis_kelamin" class="form-control">
@@ -68,32 +76,54 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Agama</label>
-                                <input type="text" class="form-control" value="Islam" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Jalur Pendaftaran</label>
-                                <input type="text" name="jalur_pendaftaran" class="form-control" value="<?= $santri['jalur_pendaftaran'] ?? '' ?>">
-                            </div>
-                            <div class="form-group">
-                                <label>Status dalam Keluarga</label>
-                                <input type="text" name="status_keluarga" class="form-control" value="<?= $santri['status_keluarga'] ?? '' ?>">
-                            </div>
-                            <div class="form-group">
-                                <label>Anak Ke-</label>
-                                <input type="number" name="anak_ke" class="form-control" value="<?= $santri['anak_ke'] ?? '' ?>">
-                            </div>
-                            <div class="form-group">
-                                <label>Alamat</label>
-                                <textarea name="alamat" class="form-control" rows="3"><?= $santri['alamat'] ?? '' ?></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>No. Telepon/HP</label>
+                                <label>No. HP</label>
                                 <input type="text" name="no_hp" class="form-control" value="<?= $santri['no_hp'] ?? '' ?>">
                             </div>
                             <div class="form-group">
-                                <label>Sekolah Asal</label>
+                                <label>Email</label>
+                                <input type="email" class="form-control" value="<?= $santri['email'] ?? '' ?>" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Asal Sekolah</label>
                                 <input type="text" name="asal_sekolah" class="form-control" value="<?= $santri['asal_sekolah'] ?? '' ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>Jenjang</label>
+                                <input type="text" class="form-control" value="<?= $santri['jenjang'] ?? '' ?>" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Gelombang</label>
+                                <input type="text" class="form-control" value="Gelombang <?= $santri['gelombang'] ?? '' ?>" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Status Pendaftaran</label>
+                                <input type="text" class="form-control" value="<?= $santri['status_pendaftaran'] ?? 'Menunggu Verifikasi' ?>" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Alamat</label>
+                                <textarea name="alamat" class="form-control" rows="3"><?= $detail['alamat'] ?? '' ?></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Desa/Kelurahan</label>
+                                <input type="text" name="desa" class="form-control" value="<?= $detail['desa'] ?? '' ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>Kecamatan</label>
+                                <input type="text" name="kecamatan" class="form-control" value="<?= $detail['kecamatan'] ?? '' ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>Kabupaten</label>
+                                <input type="text" name="kabupaten" class="form-control" value="<?= $detail['kabupaten'] ?? '' ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>Provinsi</label>
+                                <input type="text" name="provinsi" class="form-control" value="<?= $detail['provinsi'] ?? '' ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>Kode Pos</label>
+                                <input type="text" name="kode_pos" class="form-control" value="<?= $detail['kode_pos'] ?? '' ?>">
                             </div>
                         </div>
                     </div>
@@ -139,8 +169,7 @@
                                 <label>Penghasilan Ayah <span class="text-danger">*</span></label>
                                 <select name="penghasilan_ayah" class="form-control" required>
                                     <option value="">-- Pilih Penghasilan --</option>
-                                    <option value="< 1.000.000" <?= ($detail['penghasilan_ayah'] ?? '') == '< 1.000.000' ? 'selected' : '' ?>>
-                                        < Rp 1.000.000</option>
+                                    <option value="< 1.000.000" <?= ($detail['penghasilan_ayah'] ?? '') == '< 1.000.000' ? 'selected' : '' ?>>< Rp 1.000.000</option>
                                     <option value="1.000.000 - 3.000.000" <?= ($detail['penghasilan_ayah'] ?? '') == '1.000.000 - 3.000.000' ? 'selected' : '' ?>>Rp 1.000.000 - Rp 3.000.000</option>
                                     <option value="3.000.000 - 5.000.000" <?= ($detail['penghasilan_ayah'] ?? '') == '3.000.000 - 5.000.000' ? 'selected' : '' ?>>Rp 3.000.000 - Rp 5.000.000</option>
                                     <option value="> 5.000.000" <?= ($detail['penghasilan_ayah'] ?? '') == '> 5.000.000' ? 'selected' : '' ?>>> Rp 5.000.000</option>
@@ -187,8 +216,7 @@
                                 <label>Penghasilan Ibu <span class="text-danger">*</span></label>
                                 <select name="penghasilan_ibu" class="form-control" required>
                                     <option value="">-- Pilih Penghasilan --</option>
-                                    <option value="< 1.000.000" <?= ($detail['penghasilan_ibu'] ?? '') == '< 1.000.000' ? 'selected' : '' ?>>
-                                        < Rp 1.000.000</option>
+                                    <option value="< 1.000.000" <?= ($detail['penghasilan_ibu'] ?? '') == '< 1.000.000' ? 'selected' : '' ?>>< Rp 1.000.000</option>
                                     <option value="1.000.000 - 3.000.000" <?= ($detail['penghasilan_ibu'] ?? '') == '1.000.000 - 3.000.000' ? 'selected' : '' ?>>Rp 1.000.000 - Rp 3.000.000</option>
                                     <option value="3.000.000 - 5.000.000" <?= ($detail['penghasilan_ibu'] ?? '') == '3.000.000 - 5.000.000' ? 'selected' : '' ?>>Rp 3.000.000 - Rp 5.000.000</option>
                                     <option value="> 5.000.000" <?= ($detail['penghasilan_ibu'] ?? '') == '> 5.000.000' ? 'selected' : '' ?>>> Rp 5.000.000</option>
@@ -200,6 +228,11 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="form-group mt-3">
+                        <label>Alamat Orang Tua</label>
+                        <textarea name="alamat_ortu" class="form-control" rows="3"><?= $detail['alamat_ortu'] ?? '' ?></textarea>
+                    </div>
                 </div>
             </div>
         </div>
@@ -210,8 +243,8 @@
                 <div class="card-body">
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="sama_dengan_ortu">
-                            <label class="custom-control-label" for="sama_dengan_ortu">Sama dengan Orang Tua</label>
+                            <input type="checkbox" class="custom-control-input" id="sama_dengan_ortu" name="sama_dengan_ortu">
+                            <label class="custom-control-label" for="sama_dengan_ortu">Sama dengan Ayah</label>
                         </div>
                     </div>
                     <div id="form_wali">
@@ -229,13 +262,13 @@
                                     <label>Pendidikan Wali</label>
                                     <select name="pendidikan_wali" class="form-control">
                                         <option value="">-- Pilih Pendidikan --</option>
-                                        <option value="SD">SD/Sederajat</option>
-                                        <option value="SMP">SMP/Sederajat</option>
-                                        <option value="SMA">SMA/Sederajat</option>
-                                        <option value="D3">D3</option>
-                                        <option value="S1">S1</option>
-                                        <option value="S2">S2</option>
-                                        <option value="S3">S3</option>
+                                        <option value="SD" <?= ($detail['pendidikan_wali'] ?? '') == 'SD' ? 'selected' : '' ?>>SD/Sederajat</option>
+                                        <option value="SMP" <?= ($detail['pendidikan_wali'] ?? '') == 'SMP' ? 'selected' : '' ?>>SMP/Sederajat</option>
+                                        <option value="SMA" <?= ($detail['pendidikan_wali'] ?? '') == 'SMA' ? 'selected' : '' ?>>SMA/Sederajat</option>
+                                        <option value="D3" <?= ($detail['pendidikan_wali'] ?? '') == 'D3' ? 'selected' : '' ?>>D3</option>
+                                        <option value="S1" <?= ($detail['pendidikan_wali'] ?? '') == 'S1' ? 'selected' : '' ?>>S1</option>
+                                        <option value="S2" <?= ($detail['pendidikan_wali'] ?? '') == 'S2' ? 'selected' : '' ?>>S2</option>
+                                        <option value="S3" <?= ($detail['pendidikan_wali'] ?? '') == 'S3' ? 'selected' : '' ?>>S3</option>
                                     </select>
                                 </div>
                             </div>
@@ -248,11 +281,10 @@
                                     <label>Penghasilan Wali</label>
                                     <select name="penghasilan_wali" class="form-control">
                                         <option value="">-- Pilih Penghasilan --</option>
-                                        <option value="< 1.000.000">
-                                            < Rp 1.000.000</option>
-                                        <option value="1.000.000 - 3.000.000">Rp 1.000.000 - Rp 3.000.000</option>
-                                        <option value="3.000.000 - 5.000.000">Rp 3.000.000 - Rp 5.000.000</option>
-                                        <option value="> 5.000.000">> Rp 5.000.000</option>
+                                        <option value="< 1.000.000" <?= ($detail['penghasilan_wali'] ?? '') == '< 1.000.000' ? 'selected' : '' ?>>< Rp 1.000.000</option>
+                                        <option value="1.000.000 - 3.000.000" <?= ($detail['penghasilan_wali'] ?? '') == '1.000.000 - 3.000.000' ? 'selected' : '' ?>>Rp 1.000.000 - Rp 3.000.000</option>
+                                        <option value="3.000.000 - 5.000.000" <?= ($detail['penghasilan_wali'] ?? '') == '3.000.000 - 5.000.000' ? 'selected' : '' ?>>Rp 3.000.000 - Rp 5.000.000</option>
+                                        <option value="> 5.000.000" <?= ($detail['penghasilan_wali'] ?? '') == '> 5.000.000' ? 'selected' : '' ?>>> Rp 5.000.000</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -268,9 +300,10 @@
     </div>
 
     <div class="card-footer mt-4">
-        <button type="submit" class="btn btn-success">Simpan</button>
-        <a href="<?= base_url('User/DataSantri') ?>" class="btn btn-secondary">Kembali</a>
+        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+        <a href="<?= base_url('Santri') ?>" class="btn btn-secondary">Kembali</a>
     </div>
+
     <?= form_close() ?>
 </div>
 
@@ -278,20 +311,26 @@
 
 <?= $this->section('scripts') ?>
 <script>
-    // Handle checkbox wali sama dengan ortu
-    document.getElementById('sama_dengan_ortu').addEventListener('change', function() {
-        var formWali = document.getElementById('form_wali');
-        formWali.style.display = this.checked ? 'none' : 'block';
-
-        if (this.checked) {
-            // Copy data dari orang tua
-            document.getElementsByName('nama_wali')[0].value = document.getElementsByName('nama_ayah')[0].value;
-            document.getElementsByName('nik_wali')[0].value = document.getElementsByName('nik_ayah')[0].value;
-            document.getElementsByName('pendidikan_wali')[0].value = document.getElementsByName('pendidikan_ayah')[0].value;
-            document.getElementsByName('pekerjaan_wali')[0].value = document.getElementsByName('pekerjaan_ayah')[0].value;
-            document.getElementsByName('penghasilan_wali')[0].value = document.getElementsByName('penghasilan_ayah')[0].value;
-            document.getElementsByName('no_hp_wali')[0].value = document.getElementsByName('no_hp_ayah')[0].value;
-        }
-    });
+document.getElementById('sama_dengan_ortu').addEventListener('change', function() {
+    var formWali = document.getElementById('form_wali');
+    var waliInputs = formWali.getElementsByTagName('input');
+    var waliSelects = formWali.getElementsByTagName('select');
+    
+    if (this.checked) {
+        formWali.style.display = 'none';
+        // Copy data dari ayah ke wali
+        document.getElementsByName('nama_wali')[0].value = document.getElementsByName('nama_ayah')[0].value;
+        document.getElementsByName('nik_wali')[0].value = document.getElementsByName('nik_ayah')[0].value;
+        document.getElementsByName('pendidikan_wali')[0].value = document.getElementsByName('pendidikan_ayah')[0].value;
+        document.getElementsByName('pekerjaan_wali')[0].value = document.getElementsByName('pekerjaan_ayah')[0].value;
+        document.getElementsByName('penghasilan_wali')[0].value = document.getElementsByName('penghasilan_ayah')[0].value;
+        document.getElementsByName('no_hp_wali')[0].value = document.getElementsByName('no_hp_ayah')[0].value;
+    } else {
+        formWali.style.display = 'block';
+        // Clear wali inputs
+        Array.from(waliInputs).forEach(input => input.value = '');
+        Array.from(waliSelects).forEach(select => select.selectedIndex = 0);
+    }
+});
 </script>
 <?= $this->endSection() ?>

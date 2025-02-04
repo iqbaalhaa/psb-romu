@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jan 30, 2025 at 12:08 PM
+-- Generation Time: Feb 04, 2025 at 10:12 AM
 -- Server version: 8.3.0
--- PHP Version: 8.2.18
+-- PHP Version: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,19 +24,24 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_berkas`
+-- Table structure for table `pengumuman`
 --
 
-DROP TABLE IF EXISTS `tbl_berkas`;
-CREATE TABLE IF NOT EXISTS `tbl_berkas` (
-  `id_berkas` int NOT NULL AUTO_INCREMENT,
-  `id_santri` int NOT NULL,
-  `kk` varchar(255) DEFAULT NULL,
-  `akta` varchar(255) DEFAULT NULL,
-  `ijazah` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id_berkas`),
-  KEY `id_santri` (`id_santri`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+DROP TABLE IF EXISTS `pengumuman`;
+CREATE TABLE IF NOT EXISTS `pengumuman` (
+  `id_pengumuman` int NOT NULL AUTO_INCREMENT,
+  `judul` varchar(255) NOT NULL,
+  `isi` text NOT NULL,
+  `tanggal` date NOT NULL,
+  PRIMARY KEY (`id_pengumuman`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `pengumuman`
+--
+
+INSERT INTO `pengumuman` (`id_pengumuman`, `judul`, `isi`, `tanggal`) VALUES
+(1, 'Pembayaran Uang Pendaftaran', 'Pembayaran Terakhir pada tanggal 5 April 2025', '2025-02-03');
 
 -- --------------------------------------------------------
 
@@ -59,7 +64,18 @@ CREATE TABLE IF NOT EXISTS `tbl_berkas_santri` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_berkas`),
   KEY `id_santri` (`id_santri`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tbl_berkas_santri`
+--
+
+INSERT INTO `tbl_berkas_santri` (id_santri, berkas_kk, berkas_akta, berkas_ijazah, status_berkas)
+VALUES 
+(2, '1738315186_da79bf4d8b8d15bdc089.pdf', '1738315191_316dcb3d7bc9c7b83922.pdf', '1738315195_220b76c1d684331c9992.pdf', 'Menunggu Verifikasi'),
+(3, '1738347653_951eca1cee0cc8a7462e.jpeg', '1738347656_71b67668828d0d2437f7.jpeg', '1738347659_e477c14607b16be20ed1.jpeg', 'Menunggu Verifikasi'),
+(5, '1738591426_dda95e4bddec906bfcf4.jpg', '1738591450_4e6ee865b0d1d20e4327.jpg', '1738591467_390cf5e918b03406e72d.jpg', 'Menunggu Verifikasi'),
+(4, '1738591672_c62963c78b6071eb4105.jpeg', '1738591677_c9682066404eb160464a.jpeg', '1738591682_e62f429aee5403e5d64f.jpeg', 'Menunggu Verifikasi');
 
 -- --------------------------------------------------------
 
@@ -90,6 +106,12 @@ CREATE TABLE IF NOT EXISTS `tbl_detail_santri` (
   `no_hp_ortu` varchar(15) DEFAULT NULL,
   `alamat_ortu` text,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `nama_wali` varchar(100) DEFAULT NULL,
+  `nik_wali` varchar(16) DEFAULT NULL,
+  `pendidikan_wali` varchar(50) DEFAULT NULL,
+  `pekerjaan_wali` varchar(100) DEFAULT NULL,
+  `penghasilan_wali` decimal(10,2) DEFAULT NULL,
+  `no_hp_wali` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`id_detail`),
   KEY `id_santri` (`id_santri`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -107,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `tbl_jurusan` (
   `kuota` int DEFAULT '0',
   `is_active` enum('0','1') DEFAULT '1',
   PRIMARY KEY (`id_jurusan`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_jurusan`
@@ -116,7 +138,41 @@ CREATE TABLE IF NOT EXISTS `tbl_jurusan` (
 INSERT INTO `tbl_jurusan` (`id_jurusan`, `nama_jurusan`, `kuota`, `is_active`) VALUES
 (1, 'Ilmu Pengetahuan Alam (IPA)', 0, '1'),
 (2, 'Ilmu Pengetahuan Sosial (IPS)', 0, '1'),
-(3, 'MAK', 0, '1');
+(8, 'MAK', 0, '1');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_ortu`
+--
+
+DROP TABLE IF EXISTS `tbl_ortu`;
+CREATE TABLE IF NOT EXISTS `tbl_ortu` (
+  `id_ortu` int NOT NULL AUTO_INCREMENT,
+  `id_santri` int DEFAULT NULL,
+  `nama_ayah` varchar(100) DEFAULT NULL,
+  `nik_ayah` varchar(16) DEFAULT NULL,
+  `pendidikan_ayah` varchar(50) DEFAULT NULL,
+  `pekerjaan_ayah` varchar(50) DEFAULT NULL,
+  `penghasilan_ayah` varchar(50) DEFAULT NULL,
+  `no_hp_ayah` varchar(15) DEFAULT NULL,
+  `nama_ibu` varchar(100) DEFAULT NULL,
+  `nik_ibu` varchar(16) DEFAULT NULL,
+  `pendidikan_ibu` varchar(50) DEFAULT NULL,
+  `pekerjaan_ibu` varchar(50) DEFAULT NULL,
+  `penghasilan_ibu` varchar(50) DEFAULT NULL,
+  `no_hp_ibu` varchar(15) DEFAULT NULL,
+  `nama_wali` varchar(100) DEFAULT NULL,
+  `nik_wali` varchar(16) DEFAULT NULL,
+  `pendidikan_wali` varchar(50) DEFAULT NULL,
+  `pekerjaan_wali` varchar(50) DEFAULT NULL,
+  `penghasilan_wali` varchar(50) DEFAULT NULL,
+  `no_hp_wali` varchar(15) DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_ortu`),
+  KEY `id_santri` (`id_santri`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -132,18 +188,21 @@ CREATE TABLE IF NOT EXISTS `tbl_pembayaran` (
   `tgl_upload` datetime NOT NULL,
   `bukti_pembayaran` varchar(255) NOT NULL,
   `status_pembayaran` int NOT NULL DEFAULT '0',
-  `updated_at` datetime NULL,
-  `alasan_tolak` text NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `alasan_tolak` text,
   PRIMARY KEY (`id_pembayaran`),
   KEY `id_santri` (`id_santri`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_pembayaran`
 --
 
 INSERT INTO `tbl_pembayaran` (`id_pembayaran`, `id_santri`, `no_pendaftaran`, `tgl_upload`, `bukti_pembayaran`, `status_pembayaran`, `updated_at`, `alasan_tolak`) VALUES
-(1, 2, 'MTs20250002', '2025-01-30 11:55:57', '1738238157_e3270de4273c34b82c7b.jpg', 1, NULL, NULL);
+(1, 2, 'MTs20250002', '2025-01-30 11:55:57', '1738238157_e3270de4273c34b82c7b.jpg', 2, '2025-01-31 18:15:05', NULL),
+(2, 3, 'MA20250001', '2025-01-31 18:20:42', '1738347642_746b55cad8eab0b6402d.jpeg', 2, '2025-01-31 18:21:42', NULL),
+(3, 5, 'MA-2025-0001', '2025-02-03 14:02:11', '1738591331_d493b64e9f5adc838339.jpg', 2, '2025-02-03 14:02:35', NULL),
+(4, 4, 'MTs-2025-0001', '2025-02-03 14:07:44', '1738591664_238eb3004253a5380144.jpeg', 2, '2025-02-03 14:08:30', NULL);
 
 -- --------------------------------------------------------
 
@@ -192,17 +251,17 @@ CREATE TABLE IF NOT EXISTS `tbl_santri` (
   UNIQUE KEY `no_pendaftaran` (`no_pendaftaran`),
   UNIQUE KEY `nisn` (`nisn`),
   KEY `id_user` (`id_user`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_santri`
 --
 
 INSERT INTO `tbl_santri` (`id_santri`, `id_user`, `no_pendaftaran`, `nisn`, `nik`, `nama_lengkap`, `tempat_lahir`, `tgl_lahir`, `jenis_kelamin`, `no_hp`, `asal_sekolah`, `jenjang`, `gelombang`, `tahun_daftar`, `status_pendaftaran`, `status_berkas`, `created_at`) VALUES
-(1, 2, 'MTs20250001', '1234567890', NULL, 'Budi Yanto', 'Jambi', '2010-05-19', 'L', '0822280888', 'Smp 12', 'MTs', 1, '2025', 'Menunggu Verifikasi', 0, '2025-01-20 16:15:51'),
-(2, 3, 'MTs20250002', '1123456789', NULL, 'Budi Yanto', 'Jambi', '2011-05-10', 'L', '0822280888', 'Smp 12', 'MTs', 1, '2025', 'Menunggu Verifikasi', 0, '2025-01-20 16:34:53'),
-(3, 4, 'MA20250001', '1234567899', NULL, 'Tono Toni', 'Jambi', '2018-02-08', 'L', '0822280888', 'Smp 12', 'MA', 1, '2025', 'Menunggu Verifikasi', 0, '2025-01-21 09:17:07'),
-(4, 5, 'MTs-2025-0001', '1123456788', NULL, 'ini baruu', 'Jambi', '2015-06-16', 'L', '0822280480', 'smk 1', 'MTs', 1, '2025', 'Menunggu Verifikasi', 0, '2025-01-27 17:06:21');
+(5, 6, 'MA-2025-0001', '1212121212', NULL, 'Alfi Salan', 'Muara Bungo', '2014-10-23', 'L', '088747491275', 'Mts Raudhatul Mujawwidin', 'MA', 1, '2025', 'Menunggu Verifikasi', 1, '2025-02-03 13:50:15'),
+(2, 3, 'MTs20250002', '1123456789', NULL, 'Budi Yanto', 'Jambi', '2011-05-10', 'L', '0822280888', 'Smp 12', 'MTs', 1, '2025', 'Menunggu Verifikasi', 1, '2025-01-20 16:34:53'),
+(3, 4, 'MA20250001', '1234567899', NULL, 'Tono Toni', 'Jambi', '2018-02-08', 'L', '0822280888', 'Smp 12', 'MA', 1, '2025', 'Menunggu Verifikasi', 1, '2025-01-21 09:17:07'),
+(4, 5, 'MTs-2025-0001', '1123456788', NULL, 'ini baruu', 'Jambi', '2015-06-16', 'L', '0822280480', 'smk 1', 'MTs', 1, '2025', 'Menunggu Verifikasi', 1, '2025-01-27 17:06:21');
 
 -- --------------------------------------------------------
 
@@ -217,7 +276,15 @@ CREATE TABLE IF NOT EXISTS `tbl_tahun_ajaran` (
   `is_active` enum('0','1') DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_tahun`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tbl_tahun_ajaran`
+--
+
+INSERT INTO `tbl_tahun_ajaran` (`id_tahun`, `tahun_ajaran`, `is_active`, `created_at`) VALUES
+(1, '2024/2025', '0', '2025-02-03 17:58:18'),
+(2, '2025/2026', '1', '2025-02-03 17:58:54');
 
 -- --------------------------------------------------------
 
@@ -238,7 +305,7 @@ CREATE TABLE IF NOT EXISTS `tbl_user` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_user`
@@ -248,7 +315,8 @@ INSERT INTO `tbl_user` (`id_user`, `nama_user`, `email`, `password`, `level`, `j
 (1, 'Admin PSB', 'admin@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'admin', NULL, 'user.jpg', '1', '2025-01-20 16:08:24'),
 (3, 'Budi Yanto', 'budi@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'santri', 'MTs', 'user.jpg', '1', '2025-01-20 16:34:53'),
 (4, 'Tono Toni', 'tono@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'santri', 'MA', 'default.jpg', '1', '2025-01-21 09:17:07'),
-(5, 'ini baruu', 'baru@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'santri', 'MTs', 'default.jpg', '1', '2025-01-27 17:06:21');
+(5, 'ini baruu', 'baru@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'santri', 'MTs', 'default.jpg', '1', '2025-01-27 17:06:21'),
+(6, 'Alfi Salan', 'bocilciki20@gmail.com', '25d55ad283aa400af464c76d713c07ad', 'santri', 'MA', '1738590615_fcdef396b802754c34ce.jpeg', '1', '2025-02-03 13:50:15');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

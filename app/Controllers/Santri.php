@@ -6,17 +6,21 @@ use App\Controllers\BaseController;
 use App\Models\M_Santri;
 use App\Models\ModelSantri;
 use App\Models\M_Pengumuman;
+use App\Models\M_DetailSantri;
 
 class Santri extends BaseController
 {
     protected $M_Santri;
     protected $PengumumanModel;
+    protected $session;
+    protected $M_DetailSantri;
 
     public function __construct()
     {
         $this->session = \Config\Services::session();
         $this->M_Santri = new M_Santri();
         $this->PengumumanModel = new M_Pengumuman();
+        $this->M_DetailSantri = new M_DetailSantri();
         helper(['form', 'url']);
     }
 
@@ -146,10 +150,7 @@ class Santri extends BaseController
     public function uploadBerkas()
     {
         $id_santri = session()->get('id_santri');
-
-        // Debug session
-        log_message('info', 'Session Data: ' . json_encode(session()->get()));
-
+        
         if (empty($id_santri)) {
             log_message('error', 'ID Santri tidak ditemukan di session');
             session()->setFlashdata('error', 'Sesi tidak valid, silahkan login ulang');
@@ -157,11 +158,7 @@ class Santri extends BaseController
         }
 
         $jenis = $this->request->getPost('jenis');
-
-        if (empty($jenis)) {
-            session()->setFlashdata('error', 'Jenis berkas tidak valid');
-            return redirect()->to('Santri/Berkas');
-        }
+        $field_name = 'berkas_' . $jenis; // Sesuaikan dengan nama field di database
 
         $validationRule = [
             'berkas' => [
@@ -179,35 +176,23 @@ class Santri extends BaseController
             $file = $this->request->getFile('berkas');
             $fileName = $file->getRandomName();
 
-            // Pastikan direktori ada
-            $uploadPath = FCPATH . 'berkas';
-            if (!is_dir($uploadPath)) {
-                mkdir($uploadPath, 0777, true);
-            }
-
-            if (!$file->move($uploadPath, $fileName)) {
+            if (!$file->move(FCPATH . 'berkas', $fileName)) {
                 throw new \Exception('Gagal mengupload file');
             }
 
-            // Siapkan data untuk database
             $data = [
                 'id_santri' => $id_santri,
-                $jenis => $fileName
+                $field_name => $fileName,
+                'status_berkas' => 'Menunggu Verifikasi'
             ];
 
-            // Debug data
-            log_message('info', 'Data berkas yang akan disimpan: ' . json_encode($data));
-
-            // Cek berkas yang sudah ada
             $berkas = $this->M_Santri->getBerkas($id_santri);
-
+            
             if ($berkas) {
-                // Update berkas yang sudah ada
-                if (!$this->M_Santri->updateBerkas($id_santri, [$jenis => $fileName])) {
+                if (!$this->M_Santri->updateBerkas($id_santri, [$field_name => $fileName])) {
                     throw new \Exception('Gagal mengupdate berkas');
                 }
             } else {
-                // Insert berkas baru
                 if (!$this->M_Santri->insertBerkas($data)) {
                     throw new \Exception('Gagal menyimpan berkas');
                 }
@@ -229,9 +214,16 @@ class Santri extends BaseController
         // Log untuk debugging
         log_message('debug', 'Session Data: ' . json_encode(session()->get()));
 
-        // Ambil data santri
+        // Ambil data santri dari tbl_santri
         $santri = $this->M_Santri->getSantriDetail($id_santri);
-        $detail = $this->M_Santri->DetailDataOrangTua($id_santri);
+        
+        // Ambil data detail dari tbl_detail_santri
+        $detail = $this->M_DetailSantri->where('id_santri', $id_santri)->first();
+
+        // Jika detail belum ada, siapkan array kosong untuk menghindari error
+        if (empty($detail)) {
+            $detail = [];
+        }
 
         // Log data yang diambil
         log_message('debug', 'Santri Data: ' . json_encode($santri));
@@ -326,5 +318,81 @@ class Santri extends BaseController
 
         session()->setFlashdata('pesan', 'Password berhasil diubah!');
         return redirect()->to('Santri/GantiPassword');
+    }
+
+    public function UpdateBiodata()
+    {
+        $id_santri = session()->get('id_santri');
+        
+        if (!$id_santri) {
+            session()->setFlashdata('error', 'Sesi tidak valid');
+            return redirect()->to('Auth/Logout');
+        }
+
+        // Data santri
+        $dataSantri = [
+            'nisn' => $this->request->getPost('nisn'),
+            'nama_lengkap' => $this->request->getPost('nama_lengkap'),
+            'tempat_lahir' => $this->request->getPost('tempat_lahir'),
+            'tgl_lahir' => $this->request->getPost('tgl_lahir'),
+            'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
+            'no_hp' => $this->request->getPost('no_hp'),
+            'asal_sekolah' => $this->request->getPost('asal_sekolah'),
+        ];
+
+        // Data orang tua dan detail
+        $dataDetail = [
+            'id_santri' => $id_santri,
+            'nama_ayah' => $this->request->getPost('nama_ayah'),
+            'nik_ayah' => $this->request->getPost('nik_ayah'),
+            'pendidikan_ayah' => $this->request->getPost('pendidikan_ayah'),
+            'pekerjaan_ayah' => $this->request->getPost('pekerjaan_ayah'),
+            'penghasilan_ayah' => $this->request->getPost('penghasilan_ayah'),
+            'nama_ibu' => $this->request->getPost('nama_ibu'),
+            'nik_ibu' => $this->request->getPost('nik_ibu'),
+            'pendidikan_ibu' => $this->request->getPost('pendidikan_ibu'),
+            'pekerjaan_ibu' => $this->request->getPost('pekerjaan_ibu'),
+            'penghasilan_ibu' => $this->request->getPost('penghasilan_ibu'),
+            'no_hp_ortu' => $this->request->getPost('no_hp_ayah') . '/' . $this->request->getPost('no_hp_ibu'),
+        ];
+
+        // Jika checkbox wali tidak dicentang, tambahkan data wali
+        if (!$this->request->getPost('sama_dengan_ortu')) {
+            $dataDetail['nama_wali'] = $this->request->getPost('nama_wali');
+            $dataDetail['nik_wali'] = $this->request->getPost('nik_wali');
+            $dataDetail['pendidikan_wali'] = $this->request->getPost('pendidikan_wali');
+            $dataDetail['pekerjaan_wali'] = $this->request->getPost('pekerjaan_wali');
+            $dataDetail['penghasilan_wali'] = $this->request->getPost('penghasilan_wali');
+            $dataDetail['no_hp_wali'] = $this->request->getPost('no_hp_wali');
+        }
+
+        try {
+            $this->db->transStart();
+            
+            // Update tabel santri
+            $this->M_Santri->update($id_santri, $dataSantri);
+            
+            // Cek apakah detail sudah ada
+            $existingDetail = $this->M_DetailSantri->where('id_santri', $id_santri)->first();
+            
+            if ($existingDetail) {
+                $this->M_DetailSantri->update($existingDetail['id_detail'], $dataDetail);
+            } else {
+                $this->M_DetailSantri->insert($dataDetail);
+            }
+
+            $this->db->transComplete();
+
+            if ($this->db->transStatus() === false) {
+                throw new \Exception('Gagal menyimpan data');
+            }
+
+            session()->setFlashdata('success', 'Data berhasil diperbarui');
+            return redirect()->to('Santri/DetailSantri');
+
+        } catch (\Exception $e) {
+            session()->setFlashdata('error', 'Gagal memperbarui data: ' . $e->getMessage());
+            return redirect()->back()->withInput();
+        }
     }
 }

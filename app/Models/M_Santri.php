@@ -26,7 +26,7 @@ class M_Santri extends Model
 
     public function getBerkas($id_santri)
     {
-        return $this->db->table('tbl_berkas')
+        return $this->db->table('tbl_berkas_santri')
             ->where('id_santri', $id_santri)
             ->get()
             ->getRowArray();
@@ -167,7 +167,13 @@ class M_Santri extends Model
     public function getSantriDetail($id_santri)
     {
         return $this->db->table('tbl_santri')
-            ->where('id_santri', $id_santri)
+            ->select('
+                tbl_santri.*,
+                tbl_user.foto,
+                tbl_user.email
+            ')
+            ->join('tbl_user', 'tbl_user.id_user = tbl_santri.id_user')
+            ->where('tbl_santri.id_santri', $id_santri)
             ->get()
             ->getRowArray();
     }
@@ -180,15 +186,16 @@ class M_Santri extends Model
                 return 0;
             }
 
-            $totalField = 5; // Jumlah total berkas yang harus diupload
+            $totalField = 6; // Jumlah total berkas yang harus diupload
             $fieldTerisi = 0;
 
             // Hitung berkas yang sudah diupload
-            if (!empty($berkas['kartu_keluarga'])) $fieldTerisi++;
-            if (!empty($berkas['akta_kelahiran'])) $fieldTerisi++;
-            if (!empty($berkas['foto'])) $fieldTerisi++;
-            if (!empty($berkas['ijazah'])) $fieldTerisi++;
-            if (!empty($berkas['ktp_ortu'])) $fieldTerisi++;
+            if (!empty($berkas['berkas_kk'])) $fieldTerisi++;
+            if (!empty($berkas['berkas_akta'])) $fieldTerisi++;
+            if (!empty($berkas['berkas_ijazah'])) $fieldTerisi++;
+            if (!empty($berkas['berkas_skhun'])) $fieldTerisi++;
+            if (!empty($berkas['berkas_ktp_ayah'])) $fieldTerisi++;
+            if (!empty($berkas['berkas_ktp_ibu'])) $fieldTerisi++;
 
             return ($fieldTerisi / $totalField) * 100;
         } catch (\Exception $e) {
