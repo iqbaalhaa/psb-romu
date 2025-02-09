@@ -42,4 +42,54 @@ class M_Pendaftaran extends Model
         $db->transComplete();
         return $db->transStatus();
     }
+
+    public function insertUser($data)
+    {
+        // Pastikan koneksi database
+        $db = \Config\Database::connect();
+        
+        // Insert ke tabel user
+        $db->table('tbl_user')->insert($data);
+        
+        // Ambil id yang baru saja di-insert
+        $id_user = $db->insertID();
+        
+        // Log untuk debugging
+        log_message('info', 'User berhasil disimpan dengan ID: ' . $id_user);
+        
+        return $id_user;
+    }
+
+    public function insertSantri($data)
+    {
+        // Pastikan koneksi database
+        $db = \Config\Database::connect();
+        
+        // Log data yang akan disimpan
+        log_message('info', 'Data santri yang akan disimpan: ' . json_encode($data));
+        
+        // Insert ke tabel santri
+        $result = $db->table('tbl_santri')->insert($data);
+        
+        // Log hasil insert
+        log_message('info', 'Hasil insert santri: ' . ($result ? 'success' : 'failed'));
+        
+        return $result;
+    }
+
+    public function getLastId()
+    {
+        $db = \Config\Database::connect();
+        $result = $db->table('tbl_santri')
+                    ->select('id_santri')
+                    ->orderBy('id_santri', 'DESC')
+                    ->limit(1)
+                    ->get()
+                    ->getRow();
+                    
+        // Log untuk debugging
+        log_message('info', 'Last ID: ' . ($result ? $result->id_santri : '0'));
+        
+        return $result ? $result->id_santri : 0;
+    }
 }

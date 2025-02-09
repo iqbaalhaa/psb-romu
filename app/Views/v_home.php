@@ -16,6 +16,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="<?= base_url() ?>/AdminLTE/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url() ?>/AdminLTE/dist/css/adminlte.min.css">
+
+    <!-- SweetAlert2 -->
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4/bootstrap-4.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- Custom CSS -->
     <style>
         .hero-section {
@@ -71,6 +76,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
 </head>
 
 <body class="hold-transition layout-top-nav">
+    <?php 
+    $pesan = session()->getFlashdata('pesan');
+    if ($pesan) : 
+    ?>
+    <script>
+        window.onload = function() {
+            Swal.fire({
+                icon: '<?= is_array($pesan) ? $pesan['icon'] : 'error' ?>',
+                title: '<?= is_array($pesan) ? $pesan['title'] : 'Alert!' ?>',
+                html: '<?= is_array($pesan) ? nl2br(str_replace("'", "\'", $pesan['text'])) : $pesan ?>',
+                confirmButtonColor: '<?= is_array($pesan) && $pesan['icon'] == 'success' ? '#28a745' : '#dc3545' ?>',
+                confirmButtonText: 'OK'
+            });
+        }
+    </script>
+    <?php endif; ?>
+
     <div class="wrapper">
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand-md navbar-dark" style="background-color: #004d40;">
@@ -181,24 +203,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </div>
                         </div>
                     </div>
-
-                    <!-- Ganti alert dengan script SweetAlert2 -->
-                    <?php if (session()->getFlashdata('pesan')) : ?>
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                Swal.fire({
-                                    title: 'Alert!',
-                                    text: '<?= session()->getFlashdata('pesan') ?>',
-                                    icon: 'error',
-                                    confirmButtonColor: '#dc3545',
-                                    confirmButtonText: 'OK'
-                                });
-                            });
-                        </script>
-                    <?php endif; ?>
-
-                    <!-- Pastikan SweetAlert2 sudah dimuat -->
-                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
                     <?= $this->renderSection('content') ?>
 
@@ -439,6 +443,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="<?= base_url() ?>/AdminLTE/plugins/jquery/jquery.min.js"></script>
     <script src="<?= base_url() ?>/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="<?= base_url() ?>/AdminLTE/dist/js/adminlte.min.js"></script>
+    
+    <!-- Debug script untuk memeriksa pesan flash -->
+    <?php if ($pesan) : ?>
+    <script>
+        console.log('Pesan Flash:', <?= json_encode($pesan) ?>);
+    </script>
+    <?php endif; ?>
     <script>
         function togglePassword(inputId) {
             const passwordInput = document.getElementById(inputId);
