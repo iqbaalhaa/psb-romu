@@ -85,18 +85,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
     if ($pesan) : 
     ?>
     <script>
-        $(document).ready(function() {
-            // Debugging: Cek isi pesan flash
-            console.log('Pesan Flash:', <?= json_encode($pesan) ?>);
-
-            // Menggunakan SweetAlert dari AdminLTE
-            Swal.fire({
-                icon: 'success',
-                title: 'Pendaftaran Berhasil!',
-                text: '<?= is_array($pesan) ? nl2br(htmlspecialchars($pesan['text'])) : htmlspecialchars($pesan) ?>',
-                confirmButtonColor: '#28a745',
-                confirmButtonText: 'OK'
-            });
+        const pesan = <?= json_encode($pesan) ?>;
+        Swal.fire({
+            icon: pesan.icon,
+            title: pesan.title,
+            text: pesan.text,
+            confirmButtonText: 'OK'
         });
     </script>
     <?php endif; ?>
@@ -446,14 +440,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
         </div>
     </div>
-
-    
-    <!-- Debug script -->
-    <?php if ($pesan) : ?>
-    <script>
-        console.log('Pesan Flash:', <?= json_encode($pesan) ?>);
-    </script>
-    <?php endif; ?>
 
     <script>
         function togglePassword(inputId) {

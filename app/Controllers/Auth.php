@@ -93,7 +93,11 @@ class Auth extends BaseController
         // Hapus session
         $session = session();
         $session->remove(['id_user', 'nama_user', 'email', 'level', 'foto']);
-        $session->setFlashdata('pesan', 'Anda berhasil logout');
+        $session->setFlashdata('pesan', [
+            'icon' => 'error', // Menggunakan ikon error untuk logout
+            'title' => 'Logout Berhasil!',
+            'text' => 'Anda berhasil logout.'
+        ]);
         return redirect()->to(base_url());
     }
 
@@ -102,7 +106,11 @@ class Auth extends BaseController
         // Hapus session
         $session = session();
         $session->remove(['id_user', 'nama_user', 'email', 'level', 'foto']);
-        $session->setFlashdata('pesan', 'Anda berhasil logout');
+        $session->setFlashdata('pesan', [
+            'icon' => 'error', // Menggunakan ikon error untuk logout
+            'title' => 'Logout Berhasil!',
+            'text' => 'Anda berhasil logout.'
+        ]);
         return redirect()->to(base_url());
     }
 }

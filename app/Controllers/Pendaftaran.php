@@ -137,7 +137,11 @@ class Pendaftaran extends BaseController
             }
 
             log_message('info', 'Transaksi berhasil');
-            session()->setFlashdata('pesan', 'Pendaftaran berhasil! Silahkan login untuk melanjutkan.');
+            session()->setFlashdata('pesan', [
+                'icon' => 'success',
+                'title' => 'Pendaftaran Berhasil!',
+                'text' => 'Silahkan login untuk melanjutkan.'
+            ]);
             return redirect()->to(base_url());
 
         } catch (\Exception $e) {
