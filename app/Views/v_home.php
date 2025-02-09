@@ -76,6 +76,38 @@ scratch. This page gets rid of all links and provides the needed markup only.
             padding: 30px 0;
             color: white;
         }
+
+        .navbar-nav .nav-link.btn {
+            padding: 8px 20px;
+            margin-left: 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link.btn:hover {
+            background-color: #fff;
+            color: #004d40;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        
+        .dropdown-menu {
+            max-height: 300px;
+            overflow-y: auto;
+            min-width: 250px;
+        }
+        
+        .dropdown-item {
+            white-space: normal;
+            padding: 8px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
     </style>
 </head>
 
@@ -113,8 +145,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <li class="nav-item">
                             <a href="<?= base_url() ?>" class="nav-link">Beranda</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Pengumuman</a>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" id="navPengumuman">
+                                Pengumuman
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navPengumuman">
+                                <?php 
+                                $ModelPengumuman = new \App\Models\ModelPengumuman();
+                                $pengumuman = $ModelPengumuman->getPengumumanAktif();
+                                
+                                if (empty($pengumuman)) : ?>
+                                    <a class="dropdown-item text-muted">Tidak ada pengumuman</a>
+                                <?php else :
+                                    foreach ($pengumuman as $item) : ?>
+                                        <a class="dropdown-item">
+                                            <?= $item['judul'] ?>
+                                            <small class="d-block text-muted"><?= date('d/m/Y', strtotime($item['tanggal'])) ?></small>
+                                        </a>
+                                    <?php endforeach;
+                                endif; ?>
+                            </div>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">Syarat & Ketentuan</a>
@@ -123,9 +173,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <a href="#" class="nav-link">Kontak</a>
                         </li>
                         <li class="nav-item">
-                            <button type="button" class="btn btn-outline-light ml-2" data-toggle="modal" data-target="#modalLogin">
-                                Login
-                            </button>
+                            <a href="#" class="nav-link btn btn-outline-light px-3" data-toggle="modal" data-target="#modalLogin">
+                                <i class="fas fa-sign-in-alt mr-2"></i>Login
+                            </a>
                         </li>
                     </ul>
                 </div>
