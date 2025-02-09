@@ -56,6 +56,37 @@
                                 <div class="alert alert-success">
                                     <i class="fas fa-check-circle"></i> Pembayaran telah diverifikasi
                                 </div>
+                                <form action="<?= base_url('Santri/updateBuktiPembayaran') ?>" method="post" enctype="multipart/form-data" class="mt-3">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="id_pembayaran" value="<?= $pembayaran['id_pembayaran'] ?>">
+                                    <div class="form-group">
+                                        <label>Update Bukti Pembayaran</label>
+                                        <input type="file" name="bukti_pembayaran" class="form-control" required accept="image/jpeg,image/png,image/jpg">
+                                        <small class="text-muted">Format: JPG/JPEG/PNG, Maksimal 2MB</small>
+                                    </div>
+                                    <button type="submit" class="btn btn-warning">
+                                        <i class="fas fa-sync"></i> Update Bukti Pembayaran
+                                    </button>
+                                </form>
+                            <?php elseif ($pembayaran['status_pembayaran'] == 0) : ?>
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-circle"></i> Pembayaran ditolak
+                                    <?php if (!empty($pembayaran['alasan_tolak'])) : ?>
+                                        <br>Alasan: <?= $pembayaran['alasan_tolak'] ?>
+                                    <?php endif; ?>
+                                </div>
+                                <form action="<?= base_url('Santri/updateBuktiPembayaran') ?>" method="post" enctype="multipart/form-data" class="mt-3">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="id_pembayaran" value="<?= $pembayaran['id_pembayaran'] ?>">
+                                    <div class="form-group">
+                                        <label>Update Bukti Pembayaran</label>
+                                        <input type="file" name="bukti_pembayaran" class="form-control" required accept="image/jpeg,image/png,image/jpg">
+                                        <small class="text-muted">Format: JPG/JPEG/PNG, Maksimal 2MB</small>
+                                    </div>
+                                    <button type="submit" class="btn btn-warning">
+                                        <i class="fas fa-sync"></i> Update Bukti Pembayaran
+                                    </button>
+                                </form>
                             <?php endif; ?>
                         </div>
                     <?php endif; ?>

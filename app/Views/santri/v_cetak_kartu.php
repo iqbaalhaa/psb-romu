@@ -91,7 +91,7 @@
         <div class="info">
             <table>
                 <tr>
-                    <td width="200">No. Pendaftaran</td>
+                    <td width="120">No. Pendaftaran</td>
                     <td>: <?= $santri['no_pendaftaran'] ?></td>
                 </tr>
                 <tr>

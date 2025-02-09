@@ -14,6 +14,7 @@ class Santri extends BaseController
     protected $PengumumanModel;
     protected $session;
     protected $M_DetailSantri;
+    protected $db;
 
     public function __construct()
     {
@@ -21,6 +22,7 @@ class Santri extends BaseController
         $this->M_Santri = new M_Santri();
         $this->PengumumanModel = new M_Pengumuman();
         $this->M_DetailSantri = new M_DetailSantri();
+        $this->db = \Config\Database::connect();
         helper(['form', 'url']);
     }
 
@@ -394,5 +396,58 @@ class Santri extends BaseController
             session()->setFlashdata('error', 'Gagal memperbarui data: ' . $e->getMessage());
             return redirect()->back()->withInput();
         }
+    }
+
+    public function updateBuktiPembayaran()
+    {
+        try {
+            $id_pembayaran = $this->request->getPost('id_pembayaran');
+            $bukti = $this->request->getFile('bukti_pembayaran');
+
+            // Validasi file
+            if (!$bukti->isValid()) {
+                throw new \RuntimeException($bukti->getErrorString() . '(' . $bukti->getError() . ')');
+            }
+
+            if (!in_array($bukti->getClientMimeType(), ['image/jpg', 'image/jpeg', 'image/png'])) {
+                throw new \RuntimeException('Format file harus JPG/JPEG/PNG');
+            }
+
+            if ($bukti->getSizeByUnit('mb') > 2) {
+                throw new \RuntimeException('Ukuran file maksimal 2MB');
+            }
+
+            // Ambil data pembayaran lama
+            $pembayaran = $this->db->table('tbl_pembayaran')
+                ->where('id_pembayaran', $id_pembayaran)
+                ->get()->getRowArray();
+
+            // Hapus file lama jika ada
+            if (!empty($pembayaran['bukti_pembayaran'])) {
+                $path = FCPATH . 'bukti_pembayaran/' . $pembayaran['bukti_pembayaran'];
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+            }
+
+            // Upload file baru
+            $nama_file = $bukti->getRandomName();
+            $bukti->move(FCPATH . 'bukti_pembayaran', $nama_file);
+
+            // Update database
+            $this->db->table('tbl_pembayaran')
+                ->where('id_pembayaran', $id_pembayaran)
+                ->update([
+                    'bukti_pembayaran' => $nama_file,
+                    'status_pembayaran' => 1, // Reset ke status menunggu verifikasi
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+
+            session()->setFlashdata('success', 'Bukti pembayaran berhasil diupdate');
+        } catch (\Exception $e) {
+            session()->setFlashdata('error', $e->getMessage());
+        }
+
+        return redirect()->back();
     }
 }

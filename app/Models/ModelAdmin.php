@@ -74,43 +74,51 @@ class ModelAdmin extends Model
 
     public function tolakPembayaran($id_pembayaran, $alasan)
     {
-        $db = \Config\Database::connect();
-        $db->transStart();
         try {
+            // Dapatkan data pembayaran
+            $pembayaran = $this->getPembayaranById($id_pembayaran);
+            
+            if (!$pembayaran) {
+                throw new \Exception('Data pembayaran tidak ditemukan');
+            }
+
+            // Dapatkan id_santri dari tabel pembayaran
+            $id_santri = $this->db->table('tbl_pembayaran')
+                ->select('id_santri')
+                ->where('id_pembayaran', $id_pembayaran)
+                ->get()
+                ->getRow()
+                ->id_santri;
+
             // Update status pembayaran
             $this->db->table('tbl_pembayaran')
                 ->where('id_pembayaran', $id_pembayaran)
                 ->update([
-                    'status_pembayaran' => 0,
+                    'status_pembayaran' => 0, // Set status ke belum bayar
                     'alasan_tolak' => $alasan,
                     'updated_at' => date('Y-m-d H:i:s')
                 ]);
 
-            // Dapatkan id_santri dari pembayaran
-            $pembayaran = $this->getPembayaranById($id_pembayaran);
+            // Update status santri
+            $this->db->table('tbl_santri')
+                ->where('id_santri', $id_santri)
+                ->update([
+                    'status_pembayaran' => 0, // Set status ke belum bayar
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
 
-            if ($pembayaran) {
-                // Update status pendaftaran santri
-                $this->db->table('tbl_santri')
-                    ->where('id_santri', $pembayaran['id_santri'])
-                    ->update([
-                        'status_pendaftaran' => 'Pembayaran Ditolak',
-                        'alasan_penolakan' => $alasan,
-                        'updated_at' => date('Y-m-d H:i:s')
-                    ]);
-            }
-
-            $db->transComplete();
-            return $db->transStatus();
+            return true;
         } catch (\Exception $e) {
-            $db->transRollback();
-            throw $e;
+            log_message('error', 'Error tolak pembayaran: ' . $e->getMessage());
+            return false;
         }
     }
 
     public function getPembayaranById($id_pembayaran)
     {
         return $this->db->table('tbl_pembayaran')
+            ->select('tbl_pembayaran.*, tbl_santri.id_santri')
+            ->join('tbl_santri', 'tbl_santri.id_santri = tbl_pembayaran.id_santri')
             ->where('id_pembayaran', $id_pembayaran)
             ->get()
             ->getRowArray();

@@ -165,39 +165,31 @@ class Admin extends BaseController
                 throw new \Exception('Alasan penolakan harus diisi');
             }
 
-            $this->db->transStart();
-
             // Ambil data pembayaran
             $pembayaran = $this->ModelAdmin->getPembayaranById($id_pembayaran);
-
+            
             if (!$pembayaran) {
                 throw new \Exception('Data pembayaran tidak ditemukan');
             }
 
-            // Update status pembayaran
+            // Proses penolakan pembayaran
             if (!$this->ModelAdmin->tolakPembayaran($id_pembayaran, $alasan)) {
                 throw new \Exception('Gagal menolak pembayaran');
             }
 
-            $this->db->transComplete();
+            session()->setFlashdata('success', 'Pembayaran berhasil ditolak');
 
-            if ($this->db->transStatus() === false) {
-                throw new \Exception('Gagal menolak pembayaran');
+            // Redirect berdasarkan jenjang
+            $jenjang = $this->ModelAdmin->getJenjangSantri($pembayaran['id_santri']);
+            if ($jenjang == 'MA') {
+                return redirect()->to(base_url('Admin/PembayaranMA'));
+            } else {
+                return redirect()->to(base_url('Admin/PembayaranMTs'));
             }
 
-            session()->setFlashdata('pesan', 'Pembayaran berhasil ditolak');
         } catch (\Exception $e) {
-            log_message('error', 'Error tolak pembayaran: ' . $e->getMessage());
             session()->setFlashdata('error', $e->getMessage());
-        }
-
-        // Redirect berdasarkan jenjang santri
-        $jenjang = $this->ModelAdmin->getJenjangSantri($pembayaran['id_santri']);
-
-        if ($jenjang == 'MA') {
-            return redirect()->to('Admin/PembayaranMA');
-        } else {
-            return redirect()->to('Admin/PembayaranMTs');
+            return redirect()->back();
         }
     }
 

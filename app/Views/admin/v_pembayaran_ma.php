@@ -63,16 +63,16 @@
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-center">
-                                    <?php if ($row['status_pembayaran'] == 1) : ?>
+                                    <?php if ($row['status_pembayaran'] != 2) : ?>
                                         <button onclick="verifikasiPembayaran(<?= $row['id_pembayaran'] ?>)"
                                             class="btn btn-success btn-sm">
                                             <i class="fas fa-check"></i> Verifikasi
                                         </button>
-                                        <button onclick="tolakPembayaran(<?= $row['id_pembayaran'] ?>)"
-                                            class="btn btn-danger btn-sm">
-                                            <i class="fas fa-times"></i> Tolak
-                                        </button>
                                     <?php endif; ?>
+                                    <button onclick="tolakPembayaran(<?= $row['id_pembayaran'] ?>)"
+                                        class="btn btn-danger btn-sm">
+                                        <i class="fas fa-times"></i> Tolak
+                                    </button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
