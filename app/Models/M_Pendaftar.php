@@ -91,11 +91,15 @@ class M_Pendaftar extends Model
         return $this->db->table('tbl_santri')
             ->select('
                 tbl_santri.*,
-                tbl_berkas.kk,
-                tbl_berkas.akta,
-                tbl_berkas.ijazah
+                tbl_berkas_santri.berkas_kk,
+                tbl_berkas_santri.berkas_akta,
+                tbl_berkas_santri.berkas_ijazah,
+                tbl_berkas_santri.berkas_skhun,
+                tbl_berkas_santri.berkas_ktp_ayah,
+                tbl_berkas_santri.berkas_ktp_ibu,
+                tbl_berkas_santri.status_berkas
             ')
-            ->join('tbl_berkas', 'tbl_berkas.id_santri = tbl_santri.id_santri', 'left')
+            ->join('tbl_berkas_santri', 'tbl_berkas_santri.id_santri = tbl_santri.id_santri', 'left')
             ->where('tbl_santri.jenjang', 'MTs')
             ->get()->getResultArray();
     }
@@ -105,11 +109,15 @@ class M_Pendaftar extends Model
         return $this->db->table('tbl_santri')
             ->select('
                 tbl_santri.*,
-                tbl_berkas.kk,
-                tbl_berkas.akta,
-                tbl_berkas.ijazah
+                tbl_berkas_santri.berkas_kk,
+                tbl_berkas_santri.berkas_akta,
+                tbl_berkas_santri.berkas_ijazah,
+                tbl_berkas_santri.berkas_skhun,
+                tbl_berkas_santri.berkas_ktp_ayah,
+                tbl_berkas_santri.berkas_ktp_ibu,
+                tbl_berkas_santri.status_berkas
             ')
-            ->join('tbl_berkas', 'tbl_berkas.id_santri = tbl_santri.id_santri', 'left')
+            ->join('tbl_berkas_santri', 'tbl_berkas_santri.id_santri = tbl_santri.id_santri', 'left')
             ->where('tbl_santri.jenjang', 'MA')
             ->get()->getResultArray();
     }

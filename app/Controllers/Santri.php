@@ -154,58 +154,98 @@ class Santri extends BaseController
         $id_santri = session()->get('id_santri');
         
         if (empty($id_santri)) {
-            log_message('error', 'ID Santri tidak ditemukan di session');
             session()->setFlashdata('error', 'Sesi tidak valid, silahkan login ulang');
             return redirect()->to('Auth/Logout');
         }
 
+        // Validasi jenis berkas
         $jenis = $this->request->getPost('jenis');
-        $field_name = 'berkas_' . $jenis; // Sesuaikan dengan nama field di database
+        $validJenis = ['kk', 'akta', 'ijazah', 'skhun', 'ktp_ayah', 'ktp_ibu'];
+        
+        if (!in_array($jenis, $validJenis)) {
+            session()->setFlashdata('error', 'Jenis berkas tidak valid');
+            return redirect()->to('Santri/berkas');
+        }
 
-        $validationRule = [
-            'berkas' => [
-                'label' => 'Berkas',
-                'rules' => 'uploaded[berkas]|mime_in[berkas,image/jpg,image/jpeg,image/png,application/pdf]|max_size[berkas,2048]',
-            ],
-        ];
+        // Validasi file
+        $berkas = $this->request->getFile('berkas');
+        if (!$berkas->isValid()) {
+            session()->setFlashdata('error', 'File tidak valid');
+            return redirect()->to('Santri/berkas');
+        }
 
-        if (!$this->validate($validationRule)) {
-            session()->setFlashdata('error', $this->validator->getError('berkas'));
-            return redirect()->to('Santri/Berkas');
+        // Validasi ekstensi dan ukuran
+        $validMimes = ['image/jpg', 'image/jpeg', 'image/png', 'application/pdf'];
+        if (!in_array($berkas->getMimeType(), $validMimes)) {
+            session()->setFlashdata('error', 'Format file harus JPG/JPEG/PNG/PDF');
+            return redirect()->to('Santri/berkas');
+        }
+
+        if ($berkas->getSizeByUnit('mb') > 2) {
+            session()->setFlashdata('error', 'Ukuran file maksimal 2MB');
+            return redirect()->to('Santri/berkas');
         }
 
         try {
-            $file = $this->request->getFile('berkas');
-            $fileName = $file->getRandomName();
-
-            if (!$file->move(FCPATH . 'berkas', $fileName)) {
+            // Generate nama file baru
+            $fileName = $berkas->getRandomName();
+            
+            // Pindahkan file
+            if (!$berkas->move(FCPATH . 'berkas', $fileName)) {
                 throw new \Exception('Gagal mengupload file');
+            }
+
+            // Update database
+            $field = 'berkas_' . $jenis; // Tambahkan kembali prefix 'berkas_'
+            $existingBerkas = $this->db->table('tbl_berkas_santri')
+                ->where('id_santri', $id_santri)
+                ->get()
+                ->getRowArray();
+            
+            // Hapus file lama jika ada
+            if ($existingBerkas && !empty($existingBerkas[$field])) {
+                $oldFile = FCPATH . 'berkas/' . $existingBerkas[$field];
+                if (file_exists($oldFile)) {
+                    unlink($oldFile);
+                }
             }
 
             $data = [
                 'id_santri' => $id_santri,
-                $field_name => $fileName,
+                $field => $fileName,
                 'status_berkas' => 'Menunggu Verifikasi'
             ];
 
-            $berkas = $this->M_Santri->getBerkas($id_santri);
-            
-            if ($berkas) {
-                if (!$this->M_Santri->updateBerkas($id_santri, [$field_name => $fileName])) {
-                    throw new \Exception('Gagal mengupdate berkas');
-                }
+            if ($existingBerkas) {
+                // Update existing record
+                $this->db->table('tbl_berkas_santri')
+                    ->where('id_santri', $id_santri)
+                    ->update([
+                        $field => $fileName,
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ]);
             } else {
-                if (!$this->M_Santri->insertBerkas($data)) {
-                    throw new \Exception('Gagal menyimpan berkas');
-                }
+                // Insert new record
+                $this->db->table('tbl_berkas_santri')->insert([
+                    'id_santri' => $id_santri,
+                    $field => $fileName,
+                    'status_berkas' => 'Menunggu Verifikasi',
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
             }
 
+            // Update status berkas di tbl_santri
+            $this->db->table('tbl_santri')
+                ->where('id_santri', $id_santri)
+                ->update(['status_berkas' => 1]);
+
             session()->setFlashdata('success', 'Berkas berhasil diupload');
-            return redirect()->to('Santri/Berkas');
+            return redirect()->to('Santri/berkas');
+
         } catch (\Exception $e) {
-            log_message('error', 'Error upload berkas: ' . $e->getMessage());
             session()->setFlashdata('error', 'Gagal mengupload berkas: ' . $e->getMessage());
-            return redirect()->to('Santri/Berkas');
+            return redirect()->to('Santri/berkas');
         }
     }
 

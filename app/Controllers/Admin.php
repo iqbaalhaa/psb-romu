@@ -229,13 +229,26 @@ class Admin extends BaseController
         return view('admin/v_berkas_ma', $data);
     }
 
-    public function verifikasiBerkas($id)
+    public function verifikasiBerkas($id_santri)
     {
-        $this->db->table('tbl_santri')
-            ->where('id_santri', $id)
-            ->update(['status_berkas' => 1]);
+        try {
+            $db = \Config\Database::connect();
+            
+            // Update status di tbl_berkas_santri
+            $db->table('tbl_berkas_santri')
+                ->where('id_santri', $id_santri)
+                ->update(['status_berkas' => 'Terverifikasi']);
 
-        session()->setFlashdata('success', 'Berkas berhasil diverifikasi');
+            // Update status di tbl_santri
+            $db->table('tbl_santri')
+                ->where('id_santri', $id_santri)
+                ->update(['status_berkas' => 1]);
+
+            session()->setFlashdata('success', 'Berkas berhasil diverifikasi');
+        } catch (\Exception $e) {
+            session()->setFlashdata('error', 'Gagal memverifikasi berkas: ' . $e->getMessage());
+        }
+
         return redirect()->back();
     }
 

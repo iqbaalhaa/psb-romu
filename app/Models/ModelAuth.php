@@ -30,11 +30,11 @@ class ModelAuth extends Model
             ->select('
                 tbl_santri.*,
                 COALESCE(p.status_pembayaran, 0) as status_pembayaran,
-                IF(b.kk IS NOT NULL AND b.akta IS NOT NULL AND b.ijazah IS NOT NULL, 1, 0) as status_berkas
+                IF(b.berkas_kk IS NOT NULL AND b.berkas_akta IS NOT NULL AND b.berkas_ijazah IS NOT NULL, 1, 0) as status_berkas
             ')
             ->where('tbl_santri.id_user', $id_user)
             ->join('tbl_pembayaran p', 'p.id_santri = tbl_santri.id_santri', 'left')
-            ->join('tbl_berkas b', 'b.id_santri = tbl_santri.id_santri', 'left');
+            ->join('tbl_berkas_santri b', 'b.id_santri = tbl_santri.id_santri', 'left');
 
         // Debug: Log the generated SQL
         log_message('debug', 'Generated SQL: ' . $query->getCompiledSelect(false));

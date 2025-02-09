@@ -106,7 +106,7 @@ class M_Santri extends Model
             }
 
             // Jika belum ada, lakukan insert
-            $result = $this->db->table('tbl_berkas')->insert($data);
+            $result = $this->db->table('tbl_berkas_santri')->insert($data);
 
             if (!$result) {
                 log_message('error', 'Gagal insert berkas: ' . json_encode($this->db->error()));
@@ -131,7 +131,7 @@ class M_Santri extends Model
             // Hapus id_santri dari data update jika ada
             unset($data['id_santri']);
 
-            $result = $this->db->table('tbl_berkas')
+            $result = $this->db->table('tbl_berkas_santri')
                 ->where('id_santri', $id_santri)
                 ->update($data);
 
