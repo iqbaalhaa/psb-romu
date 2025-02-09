@@ -16,10 +16,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="<?= base_url() ?>/AdminLTE/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url() ?>/AdminLTE/dist/css/adminlte.min.css">
-
+    
+    <!-- Scripts -->
+    <script src="<?= base_url() ?>/AdminLTE/plugins/jquery/jquery.min.js"></script>
+    <script src="<?= base_url() ?>/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- SweetAlert2 -->
-    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4/bootstrap-4.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="<?= base_url() ?>/AdminLTE/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="<?= base_url() ?>/AdminLTE/dist/js/adminlte.min.js"></script>
 
     <!-- Custom CSS -->
     <style>
@@ -81,15 +85,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
     if ($pesan) : 
     ?>
     <script>
-        window.onload = function() {
+        $(document).ready(function() {
+            // Debugging: Cek isi pesan flash
+            console.log('Pesan Flash:', <?= json_encode($pesan) ?>);
+
+            // Menggunakan SweetAlert dari AdminLTE
             Swal.fire({
-                icon: '<?= is_array($pesan) ? $pesan['icon'] : 'error' ?>',
-                title: '<?= is_array($pesan) ? $pesan['title'] : 'Alert!' ?>',
-                html: '<?= is_array($pesan) ? nl2br(str_replace("'", "\'", $pesan['text'])) : $pesan ?>',
-                confirmButtonColor: '<?= is_array($pesan) && $pesan['icon'] == 'success' ? '#28a745' : '#dc3545' ?>',
+                icon: 'success',
+                title: 'Pendaftaran Berhasil!',
+                text: '<?= is_array($pesan) ? nl2br(htmlspecialchars($pesan['text'])) : htmlspecialchars($pesan) ?>',
+                confirmButtonColor: '#28a745',
                 confirmButtonText: 'OK'
             });
-        }
+        });
     </script>
     <?php endif; ?>
 
@@ -439,17 +447,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="<?= base_url() ?>/AdminLTE/plugins/jquery/jquery.min.js"></script>
-    <script src="<?= base_url() ?>/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="<?= base_url() ?>/AdminLTE/dist/js/adminlte.min.js"></script>
     
-    <!-- Debug script untuk memeriksa pesan flash -->
+    <!-- Debug script -->
     <?php if ($pesan) : ?>
     <script>
         console.log('Pesan Flash:', <?= json_encode($pesan) ?>);
     </script>
     <?php endif; ?>
+
     <script>
         function togglePassword(inputId) {
             const passwordInput = document.getElementById(inputId);
@@ -466,6 +471,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             }
         }
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

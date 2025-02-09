@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Feb 04, 2025 at 10:12 AM
+-- Generation Time: Feb 09, 2025 at 07:56 AM
 -- Server version: 8.3.0
--- PHP Version: 7.4.33
+-- PHP Version: 8.1.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -46,6 +46,33 @@ INSERT INTO `pengumuman` (`id_pengumuman`, `judul`, `isi`, `tanggal`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_berkas`
+--
+
+DROP TABLE IF EXISTS `tbl_berkas`;
+CREATE TABLE IF NOT EXISTS `tbl_berkas` (
+  `id_berkas` int NOT NULL AUTO_INCREMENT,
+  `id_santri` int NOT NULL,
+  `kk` varchar(255) DEFAULT NULL,
+  `akta` varchar(255) DEFAULT NULL,
+  `ijazah` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id_berkas`),
+  KEY `id_santri` (`id_santri`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tbl_berkas`
+--
+
+INSERT INTO `tbl_berkas` (`id_berkas`, `id_santri`, `kk`, `akta`, `ijazah`) VALUES
+(1, 2, '1738315186_da79bf4d8b8d15bdc089.pdf', '1738315191_316dcb3d7bc9c7b83922.pdf', '1738315195_220b76c1d684331c9992.pdf'),
+(2, 3, '1738347653_951eca1cee0cc8a7462e.jpeg', '1738347656_71b67668828d0d2437f7.jpeg', '1738347659_e477c14607b16be20ed1.jpeg'),
+(3, 5, '1738591426_dda95e4bddec906bfcf4.jpg', '1738591450_4e6ee865b0d1d20e4327.jpg', '1738591467_390cf5e918b03406e72d.jpg'),
+(4, 4, '1738591672_c62963c78b6071eb4105.jpeg', '1738591677_c9682066404eb160464a.jpeg', '1738591682_e62f429aee5403e5d64f.jpeg');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_berkas_santri`
 --
 
@@ -64,18 +91,17 @@ CREATE TABLE IF NOT EXISTS `tbl_berkas_santri` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_berkas`),
   KEY `id_santri` (`id_santri`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_berkas_santri`
 --
 
-INSERT INTO `tbl_berkas_santri` (id_santri, berkas_kk, berkas_akta, berkas_ijazah, status_berkas)
-VALUES 
-(2, '1738315186_da79bf4d8b8d15bdc089.pdf', '1738315191_316dcb3d7bc9c7b83922.pdf', '1738315195_220b76c1d684331c9992.pdf', 'Menunggu Verifikasi'),
-(3, '1738347653_951eca1cee0cc8a7462e.jpeg', '1738347656_71b67668828d0d2437f7.jpeg', '1738347659_e477c14607b16be20ed1.jpeg', 'Menunggu Verifikasi'),
-(5, '1738591426_dda95e4bddec906bfcf4.jpg', '1738591450_4e6ee865b0d1d20e4327.jpg', '1738591467_390cf5e918b03406e72d.jpg', 'Menunggu Verifikasi'),
-(4, '1738591672_c62963c78b6071eb4105.jpeg', '1738591677_c9682066404eb160464a.jpeg', '1738591682_e62f429aee5403e5d64f.jpeg', 'Menunggu Verifikasi');
+INSERT INTO `tbl_berkas_santri` (`id_berkas`, `id_santri`, `berkas_ijazah`, `berkas_skhun`, `berkas_kk`, `berkas_akta`, `berkas_ktp_ayah`, `berkas_ktp_ibu`, `status_berkas`, `created_at`, `updated_at`) VALUES
+(1, 2, '1738315195_220b76c1d684331c9992.pdf', NULL, '1738315186_da79bf4d8b8d15bdc089.pdf', '1738315191_316dcb3d7bc9c7b83922.pdf', NULL, NULL, 'Menunggu Verifikasi', '2025-02-04 11:04:41', '2025-02-04 11:04:41'),
+(2, 3, '1738347659_e477c14607b16be20ed1.jpeg', NULL, '1738347653_951eca1cee0cc8a7462e.jpeg', '1738347656_71b67668828d0d2437f7.jpeg', NULL, NULL, 'Menunggu Verifikasi', '2025-02-04 11:04:41', '2025-02-04 11:04:41'),
+(3, 5, '1738591467_390cf5e918b03406e72d.jpg', NULL, '1738591426_dda95e4bddec906bfcf4.jpg', '1738591450_4e6ee865b0d1d20e4327.jpg', NULL, NULL, 'Menunggu Verifikasi', '2025-02-04 11:04:41', '2025-02-04 11:04:41'),
+(4, 4, '1738591682_e62f429aee5403e5d64f.jpeg', NULL, '1738591672_c62963c78b6071eb4105.jpeg', '1738591677_c9682066404eb160464a.jpeg', NULL, NULL, 'Menunggu Verifikasi', '2025-02-04 11:04:41', '2025-02-04 11:04:41');
 
 -- --------------------------------------------------------
 
@@ -234,7 +260,6 @@ CREATE TABLE IF NOT EXISTS `tbl_santri` (
   `id_user` int DEFAULT NULL,
   `no_pendaftaran` varchar(20) DEFAULT NULL,
   `nisn` varchar(20) DEFAULT NULL,
-  `nik` varchar(16) DEFAULT NULL,
   `nama_lengkap` varchar(100) DEFAULT NULL,
   `tempat_lahir` varchar(100) DEFAULT NULL,
   `tgl_lahir` date DEFAULT NULL,
@@ -251,17 +276,19 @@ CREATE TABLE IF NOT EXISTS `tbl_santri` (
   UNIQUE KEY `no_pendaftaran` (`no_pendaftaran`),
   UNIQUE KEY `nisn` (`nisn`),
   KEY `id_user` (`id_user`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_santri`
 --
 
-INSERT INTO `tbl_santri` (`id_santri`, `id_user`, `no_pendaftaran`, `nisn`, `nik`, `nama_lengkap`, `tempat_lahir`, `tgl_lahir`, `jenis_kelamin`, `no_hp`, `asal_sekolah`, `jenjang`, `gelombang`, `tahun_daftar`, `status_pendaftaran`, `status_berkas`, `created_at`) VALUES
-(5, 6, 'MA-2025-0001', '1212121212', NULL, 'Alfi Salan', 'Muara Bungo', '2014-10-23', 'L', '088747491275', 'Mts Raudhatul Mujawwidin', 'MA', 1, '2025', 'Menunggu Verifikasi', 1, '2025-02-03 13:50:15'),
-(2, 3, 'MTs20250002', '1123456789', NULL, 'Budi Yanto', 'Jambi', '2011-05-10', 'L', '0822280888', 'Smp 12', 'MTs', 1, '2025', 'Menunggu Verifikasi', 1, '2025-01-20 16:34:53'),
-(3, 4, 'MA20250001', '1234567899', NULL, 'Tono Toni', 'Jambi', '2018-02-08', 'L', '0822280888', 'Smp 12', 'MA', 1, '2025', 'Menunggu Verifikasi', 1, '2025-01-21 09:17:07'),
-(4, 5, 'MTs-2025-0001', '1123456788', NULL, 'ini baruu', 'Jambi', '2015-06-16', 'L', '0822280480', 'smk 1', 'MTs', 1, '2025', 'Menunggu Verifikasi', 1, '2025-01-27 17:06:21');
+INSERT INTO `tbl_santri` (`id_santri`, `id_user`, `no_pendaftaran`, `nisn`, `nama_lengkap`, `tempat_lahir`, `tgl_lahir`, `jenis_kelamin`, `no_hp`, `asal_sekolah`, `jenjang`, `gelombang`, `tahun_daftar`, `status_pendaftaran`, `status_berkas`, `created_at`) VALUES
+(5, 6, 'MA-2025-0001', '1212121212', 'Alfi Salan', 'Muara Bungo', '2014-10-23', 'L', '088747491275', 'Mts Raudhatul Mujawwidin', 'MA', 1, '2025', 'Menunggu Verifikasi', 1, '2025-02-03 13:50:15'),
+(2, 3, 'MTs20250002', '1123456789', 'Budi Yanto', 'Jambi', '2011-05-10', 'L', '0822280888', 'Smp 12', 'MTs', 1, '2025', 'Menunggu Verifikasi', 1, '2025-01-20 16:34:53'),
+(3, 4, 'MA20250001', '1234567899', 'Tono Toni', 'Jambi', '2018-02-08', 'L', '0822280888', 'Smp 12', 'MA', 1, '2025', 'Menunggu Verifikasi', 1, '2025-01-21 09:17:07'),
+(4, 5, 'MTs-2025-0001', '1123456788', 'ini baruu', 'Jambi', '2015-06-16', 'L', '0822280480', 'smk 1', 'MTs', 1, '2025', 'Menunggu Verifikasi', 1, '2025-01-27 17:06:21'),
+(12, 20, 'MTs-2025-0006', '1210101910', 'Andi Lubis', 'Medan', '2013-09-03', 'L', '0880213312', 'SD 12 Medan', 'MTs', 1, '2025', 'Menunggu Verifikasi', 0, '2025-02-09 07:38:36'),
+(13, 21, 'MA-2025-0013', '1213111223', 'Andi Lubis MA', 'Medan', '2012-10-23', 'L', '08802133125', 'SMP 12 Medan', 'MA', 1, '2025', 'Menunggu Verifikasi', 0, '2025-02-09 07:48:37');
 
 -- --------------------------------------------------------
 
@@ -305,7 +332,7 @@ CREATE TABLE IF NOT EXISTS `tbl_user` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_user`
@@ -315,8 +342,10 @@ INSERT INTO `tbl_user` (`id_user`, `nama_user`, `email`, `password`, `level`, `j
 (1, 'Admin PSB', 'admin@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'admin', NULL, 'user.jpg', '1', '2025-01-20 16:08:24'),
 (3, 'Budi Yanto', 'budi@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'santri', 'MTs', 'user.jpg', '1', '2025-01-20 16:34:53'),
 (4, 'Tono Toni', 'tono@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'santri', 'MA', 'default.jpg', '1', '2025-01-21 09:17:07'),
-(5, 'ini baruu', 'baru@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'santri', 'MTs', 'default.jpg', '1', '2025-01-27 17:06:21'),
-(6, 'Alfi Salan', 'bocilciki20@gmail.com', '25d55ad283aa400af464c76d713c07ad', 'santri', 'MA', '1738590615_fcdef396b802754c34ce.jpeg', '1', '2025-02-03 13:50:15');
+(5, 'ini baruu', 'baru@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'santri', 'MTs', 'user.jpg', '1', '2025-01-27 17:06:21'),
+(6, 'Alfi Salan', 'bocilciki20@gmail.com', '25d55ad283aa400af464c76d713c07ad', 'santri', 'MA', '1738590615_fcdef396b802754c34ce.jpeg', '1', '2025-02-03 13:50:15'),
+(20, 'Andi Lubis', 'andi@gmail.com', '03339dc0dff443f15c254baccde9bece', 'santri', 'MTs', '1739086716_45f579b688c61ace0de4.jpg', '1', '2025-02-09 07:38:36'),
+(21, 'Andi Lubis MA', 'andima@gmail.com', '9813c16a8d8943d8414337c5616dd135', 'santri', 'MA', '1739087317_2bad02ebeb6b95c29a71.png', '1', '2025-02-09 07:48:37');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
