@@ -83,10 +83,22 @@
             <!-- Biodata -->
             <div class="col-12 col-sm-6 col-md-3">
                 <div class="info-box mb-3 shadow-sm">
-                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-user"></i></span>
+                    <span class="info-box-icon <?= ($status_biodata == 'Lengkap') ? 'bg-success' : 'bg-warning' ?> elevation-1">
+                        <i class="fas <?= ($status_biodata == 'Lengkap') ? 'fa-check' : 'fa-user' ?>"></i>
+                    </span>
                     <div class="info-box-content">
                         <span class="info-box-text">Biodata</span>
-                        <span class="info-box-number"><?= $status_biodata ?? 'Belum Lengkap' ?></span>
+                        <span class="info-box-number">
+                            <?= $status_biodata ?>
+                            <?php if ($status_biodata == 'Belum Lengkap'): ?>
+                                <br>
+                                <small>
+                                    <a href="<?= base_url('Santri/BiodataSantri') ?>" class="text-warning">
+                                        <i class="fas fa-edit"></i> Lengkapi Sekarang
+                                    </a>
+                                </small>
+                            <?php endif; ?>
+                        </span>
                     </div>
                 </div>
             </div>

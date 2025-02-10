@@ -8,7 +8,7 @@ class M_Santri extends Model
 {
     protected $table = 'tbl_santri';
     protected $primaryKey = 'id_santri';
-    protected $allowedFields = ['id_user', 'no_pendaftaran', 'nisn', 'nama_lengkap', 'jenjang', 'gelombang', 'status_berkas'];
+    protected $allowedFields = ['id_user', 'no_pendaftaran', 'nisn', 'nama_lengkap', 'jenjang', 'gelombang', 'status_berkas', 'nik', 'tempat_lahir', 'tgl_lahir', 'jenis_kelamin', 'no_hp', 'asal_sekolah'];
 
     public function insertSantri($data)
     {
@@ -230,5 +230,49 @@ class M_Santri extends Model
     public function countPengumuman()
     {
         return $this->db->table('pengumuman')->countAllResults();
+    }
+
+    public function cekKelengkapanBiodata($id_santri)
+    {
+        // Ambil data detail santri
+        $detail = $this->db->table('tbl_detail_santri')
+            ->where('id_santri', $id_santri)
+            ->get()
+            ->getRowArray();
+
+        if (!$detail) {
+            return 'Belum Lengkap';
+        }
+
+        // Field wajib yang harus diisi
+        $required_fields = [
+            'alamat',
+            'desa',
+            'kecamatan',
+            'kabupaten',
+            'provinsi',
+            'kode_pos',
+            'nama_ayah',
+            'nik_ayah',
+            'pendidikan_ayah',
+            'pekerjaan_ayah',
+            'penghasilan_ayah',
+            'no_hp_ayah',
+            'nama_ibu',
+            'nik_ibu',
+            'pendidikan_ibu',
+            'pekerjaan_ibu',
+            'penghasilan_ibu',
+            'no_hp_ibu'
+        ];
+
+        // Cek setiap field wajib
+        foreach ($required_fields as $field) {
+            if (empty($detail[$field])) {
+                return 'Belum Lengkap';
+            }
+        }
+
+        return 'Lengkap';
     }
 }

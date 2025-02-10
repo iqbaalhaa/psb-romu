@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Feb 09, 2025 at 10:55 AM
+-- Generation Time: Feb 10, 2025 at 06:43 AM
 -- Server version: 8.3.0
 -- PHP Version: 8.1.28
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `pengumuman` (
   `isi` text NOT NULL,
   `tanggal` date NOT NULL,
   PRIMARY KEY (`id_pengumuman`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `pengumuman`
@@ -93,24 +93,25 @@ CREATE TABLE IF NOT EXISTS `tbl_detail_santri` (
   `nik_ayah` varchar(16) DEFAULT NULL,
   `pendidikan_ayah` varchar(50) DEFAULT NULL,
   `pekerjaan_ayah` varchar(100) DEFAULT NULL,
-  `penghasilan_ayah` decimal(10,2) DEFAULT NULL,
+  `penghasilan_ayah` varchar(50) DEFAULT NULL,
+  `no_hp_ayah` varchar(15) DEFAULT NULL,
   `nama_ibu` varchar(100) DEFAULT NULL,
   `nik_ibu` varchar(16) DEFAULT NULL,
   `pendidikan_ibu` varchar(50) DEFAULT NULL,
   `pekerjaan_ibu` varchar(100) DEFAULT NULL,
-  `penghasilan_ibu` decimal(10,2) DEFAULT NULL,
-  `no_hp_ortu` varchar(15) DEFAULT NULL,
-  `alamat_ortu` text,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `penghasilan_ibu` varchar(50) DEFAULT NULL,
+  `no_hp_ibu` varchar(15) DEFAULT NULL,
   `nama_wali` varchar(100) DEFAULT NULL,
   `nik_wali` varchar(16) DEFAULT NULL,
   `pendidikan_wali` varchar(50) DEFAULT NULL,
   `pekerjaan_wali` varchar(100) DEFAULT NULL,
-  `penghasilan_wali` decimal(10,2) DEFAULT NULL,
+  `penghasilan_wali` varchar(50) DEFAULT NULL,
   `no_hp_wali` varchar(15) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_detail`),
   KEY `id_santri` (`id_santri`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -197,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `tbl_pembayaran` (
 INSERT INTO `tbl_pembayaran` (`id_pembayaran`, `id_santri`, `no_pendaftaran`, `tgl_upload`, `bukti_pembayaran`, `status_pembayaran`, `updated_at`, `alasan_tolak`) VALUES
 (1, 2, 'MTs20250002', '2025-01-30 11:55:57', '1738238157_e3270de4273c34b82c7b.jpg', 2, '2025-01-31 18:15:05', NULL),
 (2, 3, 'MA20250001', '2025-01-31 18:20:42', '1738347642_746b55cad8eab0b6402d.jpeg', 2, '2025-01-31 18:21:42', NULL),
-(3, 5, 'MA-2025-0001', '2025-02-03 14:02:11', '1738591331_d493b64e9f5adc838339.jpg', 2, '2025-02-03 14:02:35', NULL),
+(3, 5, 'MA-2025-0001', '2025-02-09 13:14:57', '1739106897_dbf5ca3ada0a8b0e1776.jpg', 2, '2025-02-09 13:15:21', 'upload ulang'),
 (4, 4, 'MTs-2025-0001', '2025-02-03 14:07:44', '1738591664_238eb3004253a5380144.jpeg', 2, '2025-02-03 14:08:30', NULL);
 
 -- --------------------------------------------------------
@@ -230,6 +231,7 @@ CREATE TABLE IF NOT EXISTS `tbl_santri` (
   `id_user` int DEFAULT NULL,
   `no_pendaftaran` varchar(20) DEFAULT NULL,
   `nisn` varchar(20) DEFAULT NULL,
+  `nik` varchar(16) DEFAULT NULL,
   `nama_lengkap` varchar(100) DEFAULT NULL,
   `tempat_lahir` varchar(100) DEFAULT NULL,
   `tgl_lahir` date DEFAULT NULL,
@@ -246,14 +248,14 @@ CREATE TABLE IF NOT EXISTS `tbl_santri` (
   UNIQUE KEY `no_pendaftaran` (`no_pendaftaran`),
   UNIQUE KEY `nisn` (`nisn`),
   KEY `id_user` (`id_user`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_santri`
 --
 
-INSERT INTO `tbl_santri` (`id_santri`, `id_user`, `no_pendaftaran`, `nisn`, `nama_lengkap`, `tempat_lahir`, `tgl_lahir`, `jenis_kelamin`, `no_hp`, `asal_sekolah`, `jenjang`, `gelombang`, `tahun_daftar`, `status_pendaftaran`, `status_berkas`, `created_at`) VALUES
-(5, 6, 'MA-2025-0001', '1212121212', 'Alfi Salam', 'Muara Bungo', '2014-10-23', 'L', '088747491275', 'Mts Raudhatul Mujawwidin', 'MA', 1, '2025', 'Menunggu Verifikasi', 1, '2025-02-03 13:50:15');
+INSERT INTO `tbl_santri` (`id_santri`, `id_user`, `no_pendaftaran`, `nisn`, `nik`, `nama_lengkap`, `tempat_lahir`, `tgl_lahir`, `jenis_kelamin`, `no_hp`, `asal_sekolah`, `jenjang`, `gelombang`, `tahun_daftar`, `status_pendaftaran`, `status_berkas`, `created_at`) VALUES
+(5, 6, 'MA-2025-0001', '1212121212', '2147483647', 'Alfi Salam', 'Muara Bungo', '2014-10-23', 'L', '088747491275', 'Mts Raudhatul Mujawwidin', 'MA', 1, '2025', 'Menunggu Verifikasi', 1, '2025-02-03 13:50:15');
 
 -- --------------------------------------------------------
 
