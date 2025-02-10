@@ -394,4 +394,93 @@ class Admin extends BaseController
         session()->setFlashdata('pesan', 'User berhasil dihapus');
         return redirect()->to('Admin/User');
     }
+
+    public function DetailPendaftar($id_santri)
+    {
+        // Validasi ID
+        if (empty($id_santri)) {
+            session()->setFlashdata('error', 'ID Santri tidak valid');
+            return redirect()->back();
+        }
+
+        try {
+            // Ambil data santri dan user
+            $santri = $this->M_Pendaftar->getDetailSantri($id_santri);
+            if (!$santri) {
+                throw new \Exception('Data santri tidak ditemukan');
+            }
+
+            // Sesuaikan status berkas menjadi boolean (0 atau 1)
+            $santri['status_berkas'] = ($santri['status_berkas'] > 0) ? 1 : 0;
+
+            // Ambil data detail santri (alamat dan orang tua)
+            $detail = $this->db->table('tbl_detail_santri')
+                ->where('id_santri', $id_santri)
+                ->get()
+                ->getRowArray();
+
+            // Ambil data pembayaran
+            $pembayaran = $this->db->table('tbl_pembayaran')
+                ->where('id_santri', $id_santri)
+                ->get()
+                ->getRowArray();
+
+            // Ambil data berkas
+            $berkas = $this->db->table('tbl_berkas_santri')
+                ->where('id_santri', $id_santri)
+                ->get()
+                ->getRowArray();
+
+            $data = [
+                'title' => 'Detail Pendaftar',
+                'santri' => $santri,
+                'detail' => $detail,
+                'pembayaran' => $pembayaran,
+                'berkas' => $berkas
+            ];
+
+            return view('admin/v_detail_pendaftar', $data);
+
+        } catch (\Exception $e) {
+            session()->setFlashdata('error', $e->getMessage());
+            return redirect()->back();
+        }
+    }
+
+    public function CetakDetail($id_santri)
+    {
+        try {
+            // Ambil data santri dan user
+            $santri = $this->M_Pendaftar->getDetailSantri($id_santri);
+            if (!$santri) {
+                throw new \Exception('Data santri tidak ditemukan');
+            }
+
+            // Ambil data detail santri (alamat dan orang tua)
+            $detail = $this->db->table('tbl_detail_santri')
+                ->where('id_santri', $id_santri)
+                ->get()
+                ->getRowArray();
+
+            // Ambil data pembayaran
+            $pembayaran = $this->db->table('tbl_pembayaran')
+                ->where('id_santri', $id_santri)
+                ->get()
+                ->getRowArray();
+
+            $data = [
+                'title' => 'Cetak Detail Pendaftar',
+                'santri' => $santri,
+                'detail' => $detail,
+                'pembayaran' => $pembayaran
+            ];
+
+            // Load view cetak yang khusus untuk print
+            return view('admin/v_cetak_detail_pendaftar', $data);
+
+        } catch (\Exception $e) {
+            session()->setFlashdata('error', $e->getMessage());
+            return redirect()->back();
+        }
+    }
 }

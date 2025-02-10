@@ -74,6 +74,9 @@
                                         <button onclick="verifikasiPembayaran(<?= $row['id_pembayaran'] ?>)" class="btn btn-success btn-sm">
                                             <i class="fas fa-check"></i> Verifikasi
                                         </button>
+                                        <button onclick="tolakPembayaran(<?= $row['id_pembayaran'] ?>)" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-times"></i> Tolak
+                                        </button>
                                     <?php endif; ?>
                                 </td>
                             </tr>
@@ -85,4 +88,135 @@
     </div>
 </div>
 
+<?= $this->endSection() ?>
+
+<?= $this->section('scripts') ?>
+<script>
+$(document).ready(function() {
+    // Inisialisasi DataTable
+    var table = $('#tabelPendaftar').DataTable({
+        "responsive": true,
+        "lengthChange": true,
+        "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print"]
+    });
+
+    // Filter Tahun Ajaran
+    $('#filterTahun').on('change', function() {
+        table.column(1).search(this.value).draw();
+    });
+
+    // Filter Gelombang
+    $('#filterGelombang').on('change', function() {
+        table.column(4).search(this.value ? 'Gelombang ' + this.value : '').draw();
+    });
+});
+
+// Fungsi verifikasi pembayaran
+function verifikasiPembayaran(id_pembayaran) {
+    Swal.fire({
+        title: 'Verifikasi Pembayaran',
+        text: "Apakah Anda yakin ingin memverifikasi pembayaran ini?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Verifikasi!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '<?= base_url('Admin/verifikasiPembayaran') ?>',
+                type: 'POST',
+                data: {
+                    id_pembayaran: id_pembayaran
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire(
+                            'Berhasil!',
+                            response.message,
+                            'success'
+                        ).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire(
+                            'Gagal!',
+                            response.message,
+                            'error'
+                        );
+                    }
+                },
+                error: function() {
+                    Swal.fire(
+                        'Error!',
+                        'Terjadi kesalahan saat memproses permintaan',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+}
+
+// Fungsi tolak pembayaran
+function tolakPembayaran(id_pembayaran) {
+    Swal.fire({
+        title: 'Tolak Pembayaran',
+        text: "Masukkan alasan penolakan:",
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Tolak',
+        cancelButtonText: 'Batal',
+        showLoaderOnConfirm: true,
+        preConfirm: (alasan) => {
+            if (!alasan) {
+                Swal.showValidationMessage('Alasan penolakan harus diisi');
+            }
+            return alasan;
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '<?= base_url('Admin/tolakPembayaran') ?>',
+                type: 'POST',
+                data: {
+                    id_pembayaran: id_pembayaran,
+                    alasan_tolak: result.value
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire(
+                            'Berhasil!',
+                            response.message,
+                            'success'
+                        ).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire(
+                            'Gagal!',
+                            response.message,
+                            'error'
+                        );
+                    }
+                },
+                error: function() {
+                    Swal.fire(
+                        'Error!',
+                        'Terjadi kesalahan saat memproses permintaan',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+}
+</script>
 <?= $this->endSection() ?>
