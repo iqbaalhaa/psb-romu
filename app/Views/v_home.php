@@ -16,7 +16,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="<?= base_url() ?>/AdminLTE/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url() ?>/AdminLTE/dist/css/adminlte.min.css">
-    
+
     <!-- Scripts -->
     <script src="<?= base_url() ?>/AdminLTE/plugins/jquery/jquery.min.js"></script>
     <script src="<?= base_url() ?>/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -92,19 +92,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
         .dropdown:hover .dropdown-menu {
             display: block;
         }
-        
+
         .dropdown-menu {
             max-height: 300px;
             overflow-y: auto;
             min-width: 250px;
         }
-        
+
         .dropdown-item {
             white-space: normal;
             padding: 8px 15px;
             border-bottom: 1px solid #eee;
         }
-        
+
         .dropdown-item:last-child {
             border-bottom: none;
         }
@@ -112,19 +112,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
 </head>
 
 <body class="hold-transition layout-top-nav">
-    <?php 
+    <?php
     $pesan = session()->getFlashdata('pesan');
-    if ($pesan) : 
+    if ($pesan) :
     ?>
-    <script>
-        const pesan = <?= json_encode($pesan) ?>;
-        Swal.fire({
-            icon: pesan.icon,
-            title: pesan.title,
-            text: pesan.text,
-            confirmButtonText: 'OK'
-        });
-    </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            const pesan = <?= json_encode($pesan) ?>;
+            Swal.fire({
+                icon: pesan.icon,
+                title: pesan.title,
+                text: pesan.text,
+                confirmButtonText: 'OK'
+            });
+        </script>
     <?php endif; ?>
 
     <div class="wrapper">
@@ -150,19 +151,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 Pengumuman
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navPengumuman">
-                                <?php 
+                                <?php
                                 $ModelPengumuman = new \App\Models\ModelPengumuman();
                                 $pengumuman = $ModelPengumuman->getPengumumanAktif();
-                                
+
                                 if (empty($pengumuman)) : ?>
                                     <a class="dropdown-item text-muted">Tidak ada pengumuman</a>
-                                <?php else :
+                                    <?php else :
                                     foreach ($pengumuman as $item) : ?>
                                         <a class="dropdown-item">
                                             <?= $item['judul'] ?>
                                             <small class="d-block text-muted"><?= date('d/m/Y', strtotime($item['tanggal'])) ?></small>
                                         </a>
-                                    <?php endforeach;
+                                <?php endforeach;
                                 endif; ?>
                             </div>
                         </li>
@@ -302,8 +303,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <!-- Data Akun -->
                     <h5 class="border-bottom pb-2">Data Akun</h5>
                     <div class="form-group">
-                        <label>Email <span class="text-danger">*</span></label>
-                        <input type="email" name="email" class="form-control" required>
+                        <label for="email">Email <span class="text-danger">*</span></label>
+                        <input type="email" name="email" class="form-control" id="email" required>
                     </div>
                     <div class="form-group">
                         <label>Password <span class="text-danger">*</span></label>
@@ -387,8 +388,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <!-- Data Akun -->
                     <h5 class="border-bottom pb-2">Data Akun</h5>
                     <div class="form-group">
-                        <label>Email <span class="text-danger">*</span></label>
-                        <input type="email" name="email" class="form-control" required>
+                        <label for="email">Email <span class="text-danger">*</span></label>
+                        <input type="email" name="email" class="form-control" id="email" required>
                     </div>
                     <div class="form-group">
                         <label>Password <span class="text-danger">*</span></label>
@@ -470,8 +471,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="modal-body">
                     <?= form_open('Auth/CekLogin') ?>
                     <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" name="email" class="form-control" value="<?= old('email') ?>" required>
+                        <label for="email">Email</label>
+                        <input type="email" name="email" class="form-control" id="email" value="<?= old('email') ?>" required>
                     </div>
                     <div class="form-group">
                         <label>Password</label>
@@ -507,8 +508,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             }
         }
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

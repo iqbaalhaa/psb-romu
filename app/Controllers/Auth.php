@@ -84,7 +84,11 @@ class Auth extends BaseController
             }
         }
 
-        session()->setFlashdata('pesan', 'Email atau Password Salah!');
+        session()->setFlashdata('pesan', [
+            'icon' => 'error',
+            'title' => 'Login Gagal',
+            'text' => 'Email atau kata sandi yang Anda masukkan salah.'
+        ]);
         return redirect()->back();
     }
 
