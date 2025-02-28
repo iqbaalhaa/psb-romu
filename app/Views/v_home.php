@@ -168,12 +168,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">Syarat & Ketentuan</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Kontak</a>
-                        </li>
-                        <li class="nav-item">
                             <a href="#" class="nav-link btn btn-outline-light px-3" data-toggle="modal" data-target="#modalLogin">
                                 <i class="fas fa-sign-in-alt mr-2"></i>Login
                             </a>
@@ -269,15 +263,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="row">
                     <div class="col-md-6">
                         <h5>Kontak Kami</h5>
-                        <p><i class="fas fa-map-marker-alt"></i> Alamat Pesantren</p>
-                        <p><i class="fas fa-phone"></i> (021) 1234567</p>
-                        <p><i class="fas fa-envelope"></i> info@pesantrenromu.sch.id</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Tirta Kencana, Kec. Rimbo Bujang, Kabupaten Tebo, Jambi 37553</p>
+                        <p><i class="fas fa-phone"></i> 0822-6052-8147</p>
+                        <p><i class="fas fa-envelope"></i> ponpesraudhatulmujawwidin@gmail.com</p>
                     </div>
                     <div class="col-md-6 text-md-right">
                         <h5>Media Sosial</h5>
-                        <a href="#" class="text-white mr-3"><i class="fab fa-facebook fa-2x"></i></a>
-                        <a href="#" class="text-white mr-3"><i class="fab fa-instagram fa-2x"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-youtube fa-2x"></i></a>
+                        <a href="#" class="text-white mr-3"><i class="fab fa-facebook fa-2x"></i> Raudhatulmujawwidin</a>
+                        <a href="#" class="text-white mr-3"><i class="fab fa-instagram fa-2x"></i> raudhatul_mujawwidin</a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube fa-2x"></i> mujawwidin tv</a>
                     </div>
                 </div>
                 <hr class="mt-4" style="border-color: rgba(255,255,255,0.1)">
@@ -485,6 +479,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </div>
                         </div>
                     </div>
+                    <p><a href="<?= base_url('lupapassword') ?>" class="btn btn-link">Lupa Password?</a></p>
+                    <?php if (session()->getFlashdata('success')) : ?>
+                        <div class="alert alert-success">
+                            <?= session()->getFlashdata('success') ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (session()->getFlashdata('error')) : ?>
+                        <div class="alert alert-danger">
+                            <?= session()->getFlashdata('error') ?>
+                        </div>
+                    <?php endif; ?>
                     <button type="submit" class="btn btn-success btn-block">Login</button>
                     <?= form_close() ?>
                 </div>

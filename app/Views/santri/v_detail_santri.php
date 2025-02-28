@@ -47,33 +47,33 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>NISN</label>
-                        <input type="text" name="nisn" class="form-control" value="<?= $santri['nisn'] ?? '' ?>" readonly>
+                        <input type="text" name="nisn" class="form-control" value="<?= $santri['nisn'] ?? '' ?>">
                     </div>
                     <div class="form-group">
                         <label>Nama Lengkap</label>
-                        <input type="text" name="nama_lengkap" class="form-control" value="<?= $santri['nama_lengkap'] ?? '' ?>" readonly>
+                        <input type="text" name="nama_lengkap" class="form-control" value="<?= $santri['nama_lengkap'] ?? '' ?>">
                     </div>
                     <div class="form-group">
                         <label>Tempat Lahir</label>
-                        <input type="text" name="tempat_lahir" class="form-control" value="<?= $santri['tempat_lahir'] ?? '' ?>" readonly>
+                        <input type="text" name="tempat_lahir" class="form-control" value="<?= $santri['tempat_lahir'] ?? '' ?>">
                     </div>
                     <div class="form-group">
                         <label>Tanggal Lahir</label>
-                        <input type="date" name="tgl_lahir" class="form-control" value="<?= $santri['tgl_lahir'] ?? '' ?>" readonly>
+                        <input type="date" name="tgl_lahir" class="form-control" value="<?= $santri['tgl_lahir'] ?? '' ?>">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Jenis Kelamin</label>
-                        <input type="text" class="form-control" value="<?= ($santri['jenis_kelamin'] ?? '') == 'L' ? 'Laki-laki' : 'Perempuan' ?>" readonly>
+                        <input type="text" class="form-control" value="<?= ($santri['jenis_kelamin'] ?? '') == 'L' ? 'Laki-laki' : 'Perempuan' ?>">
                     </div>
                     <div class="form-group">
                         <label>No. HP</label>
-                        <input type="text" name="no_hp" class="form-control" value="<?= $santri['no_hp'] ?? '' ?>" readonly>
+                        <input type="text" name="no_hp" class="form-control" value="<?= $santri['no_hp'] ?? '' ?>">
                     </div>
                     <div class="form-group">
                         <label>Asal Sekolah</label>
-                        <input type="text" name="asal_sekolah" class="form-control" value="<?= $santri['asal_sekolah'] ?? '' ?>" readonly>
+                        <input type="text" name="asal_sekolah" class="form-control" value="<?= $santri['asal_sekolah'] ?? '' ?>">
                     </div>
                     <div class="form-group">
                         <label>NIK</label>

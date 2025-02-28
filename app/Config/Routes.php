@@ -29,6 +29,8 @@ $routes->group('Admin', ['filter' => 'filteradmin'], function ($routes) {
     $routes->post('Pengumuman/add', 'Pengumuman::add');
     $routes->post('Pengumuman/edit/(:num)', 'Pengumuman::edit/$1');
     $routes->get('Pengumuman/delete/(:num)', 'Pengumuman::delete/$1');
+    $routes->get('EditPendaftar/(:num)', 'Admin::EditPendaftar/$1');
+    $routes->post('UpdatePendaftar/(:num)', 'Admin::UpdatePendaftar/$1');
     // ... route admin lainnya ...
 });
 
@@ -51,3 +53,8 @@ $routes->get('Santri/Pembayaran', 'Santri::Pembayaran');
 $routes->post('Santri/uploadBuktiPembayaran', 'Santri::uploadBuktiPembayaran');
 $routes->get('Santri/Berkas', 'Santri::Berkas');
 $routes->post('Santri/uploadBerkas', 'Santri::uploadBerkas');
+
+$routes->get('lupapassword', 'LupaPassword::index');
+$routes->post('lupapassword/proses', 'LupaPassword::prosesLupaPassword');
+$routes->get('lupapassword/reset/(:any)', 'LupaPassword::reset/$1');
+$routes->post('lupapassword/reset', 'LupaPassword::prosesResetPassword');

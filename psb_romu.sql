@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Feb 10, 2025 at 06:43 AM
--- Server version: 8.3.0
--- PHP Version: 8.1.28
+-- Generation Time: Feb 28, 2025 at 05:08 PM
+-- Server version: 9.1.0
+-- PHP Version: 8.2.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -34,14 +34,14 @@ CREATE TABLE IF NOT EXISTS `pengumuman` (
   `isi` text NOT NULL,
   `tanggal` date NOT NULL,
   PRIMARY KEY (`id_pengumuman`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `pengumuman`
 --
 
 INSERT INTO `pengumuman` (`id_pengumuman`, `judul`, `isi`, `tanggal`) VALUES
-(1, 'Pembayaran Uang Pendaftaran', 'Pembayaran Terakhir pada tanggal 5 April 2025', '2025-02-03');
+(1, 'Pendaftaran Santri Baru', 'Pendaftaran: 01 Maret 2025 s/d 31 Mei 2025\r\nKUOTA TERBATAS!\r\nBuruan Daftar', '2025-02-03');
 
 -- --------------------------------------------------------
 
@@ -64,14 +64,16 @@ CREATE TABLE IF NOT EXISTS `tbl_berkas_santri` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_berkas`),
   KEY `id_santri` (`id_santri`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_berkas_santri`
 --
 
 INSERT INTO `tbl_berkas_santri` (`id_berkas`, `id_santri`, `berkas_ijazah`, `berkas_skhun`, `berkas_kk`, `berkas_akta`, `berkas_ktp_ayah`, `berkas_ktp_ibu`, `status_berkas`, `created_at`, `updated_at`) VALUES
-(5, 5, '1739097771_a4b0e895791af22d22e4.png', '1739097780_4cacac6e5f0d1cdfb7ab.png', '1739097751_7cc23a57c9e765a1bcb2.png', '1739097758_eb2fa320d36305ea5679.png', '1739097793_67aefe3fd72a7a20900d.png', '1739097800_272993a7f14ede76901e.png', 'Terverifikasi', '2025-02-09 03:42:31', '2025-02-09 10:51:44');
+(8, 8, '1739433632_e930f935178e180944c7.jpg', '1739433648_2f460221a4f3759c908c.jpg', '1739433611_0f6cd24ad753ddd210b8.jpg', '1739433622_74be9d4e7433ec61f96d.jpg', '1739433658_fbd1dc31e96245a608d3.jpg', '1739433666_c742996f5a96169494bc.jpg', 'Terverifikasi', '2025-02-13 01:00:11', '2025-02-13 08:06:58'),
+(10, 11, NULL, NULL, '1740165096_553ff1eee951dbc9788d.jpg', '1740228423_950cf6e563d893169412.jpg', NULL, NULL, 'Menunggu Verifikasi', '2025-02-21 12:11:36', '2025-02-22 05:47:03'),
+(11, 12, NULL, NULL, '1740557002_d880bf47335f57c3c227.jpg', NULL, NULL, NULL, 'Terverifikasi', '2025-02-26 01:03:22', '2025-02-26 08:06:42');
 
 -- --------------------------------------------------------
 
@@ -111,7 +113,14 @@ CREATE TABLE IF NOT EXISTS `tbl_detail_santri` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_detail`),
   KEY `id_santri` (`id_santri`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tbl_detail_santri`
+--
+
+INSERT INTO `tbl_detail_santri` (`id_detail`, `id_santri`, `alamat`, `desa`, `kecamatan`, `kabupaten`, `provinsi`, `kode_pos`, `nama_ayah`, `nik_ayah`, `pendidikan_ayah`, `pekerjaan_ayah`, `penghasilan_ayah`, `no_hp_ayah`, `nama_ibu`, `nik_ibu`, `pendidikan_ibu`, `pekerjaan_ibu`, `penghasilan_ibu`, `no_hp_ibu`, `nama_wali`, `nik_wali`, `pendidikan_wali`, `pekerjaan_wali`, `penghasilan_wali`, `no_hp_wali`, `created_at`, `updated_at`) VALUES
+(3, 11, 'tyuyugtu', 'ere', 'ere', 'ere', 'rt', '12345', 'er', '9807645321457698', 'SD/MI', 'uy', '< 500.000', '08998786678', 'try', '1256349867090563', 'SD/MI', 'uyt', '< 500.000', '098765432187', 'ytyr', '0897645321789054', 'SD/MI', 'ui', '< 500.000', '098765431267', '2025-02-21 12:03:34', '2025-02-22 05:29:57');
 
 -- --------------------------------------------------------
 
@@ -133,9 +142,9 @@ CREATE TABLE IF NOT EXISTS `tbl_jurusan` (
 --
 
 INSERT INTO `tbl_jurusan` (`id_jurusan`, `nama_jurusan`, `kuota`, `is_active`) VALUES
-(1, 'Ilmu Pengetahuan Alam (IPA)', 0, '1'),
-(2, 'Ilmu Pengetahuan Sosial (IPS)', 0, '1'),
-(8, 'MAK', 0, '1');
+(1, 'Ilmu Pengetahuan Alam (IPA)', 150, '1'),
+(2, 'Ilmu Pengetahuan Sosial (IPS)', 150, '1'),
+(8, 'MAK', 150, '1');
 
 -- --------------------------------------------------------
 
@@ -189,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `tbl_pembayaran` (
   `alasan_tolak` text,
   PRIMARY KEY (`id_pembayaran`),
   KEY `id_santri` (`id_santri`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_pembayaran`
@@ -198,8 +207,10 @@ CREATE TABLE IF NOT EXISTS `tbl_pembayaran` (
 INSERT INTO `tbl_pembayaran` (`id_pembayaran`, `id_santri`, `no_pendaftaran`, `tgl_upload`, `bukti_pembayaran`, `status_pembayaran`, `updated_at`, `alasan_tolak`) VALUES
 (1, 2, 'MTs20250002', '2025-01-30 11:55:57', '1738238157_e3270de4273c34b82c7b.jpg', 2, '2025-01-31 18:15:05', NULL),
 (2, 3, 'MA20250001', '2025-01-31 18:20:42', '1738347642_746b55cad8eab0b6402d.jpeg', 2, '2025-01-31 18:21:42', NULL),
-(3, 5, 'MA-2025-0001', '2025-02-09 13:14:57', '1739106897_dbf5ca3ada0a8b0e1776.jpg', 2, '2025-02-09 13:15:21', 'upload ulang'),
-(4, 4, 'MTs-2025-0001', '2025-02-03 14:07:44', '1738591664_238eb3004253a5380144.jpeg', 2, '2025-02-03 14:08:30', NULL);
+(4, 4, 'MTs-2025-0001', '2025-02-03 14:07:44', '1738591664_238eb3004253a5380144.jpeg', 2, '2025-02-03 14:08:30', NULL),
+(7, 8, 'MTs-2025-0008', '2025-02-13 07:58:35', '1739777812_e1588d47f357f06c44e0.jpg', 2, '2025-02-20 17:38:48', NULL),
+(9, 11, 'MA-2025-0009', '2025-02-22 12:41:49', '1740228109_c9d6587709fc5d250b6f.jpg', 0, '2025-02-22 12:43:19', 'kjkhug'),
+(10, 12, 'MA-2025-0012', '2025-02-26 08:14:02', '1740557642_78dfe93223ca3692571a.jpg', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -248,14 +259,16 @@ CREATE TABLE IF NOT EXISTS `tbl_santri` (
   UNIQUE KEY `no_pendaftaran` (`no_pendaftaran`),
   UNIQUE KEY `nisn` (`nisn`),
   KEY `id_user` (`id_user`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_santri`
 --
 
 INSERT INTO `tbl_santri` (`id_santri`, `id_user`, `no_pendaftaran`, `nisn`, `nik`, `nama_lengkap`, `tempat_lahir`, `tgl_lahir`, `jenis_kelamin`, `no_hp`, `asal_sekolah`, `jenjang`, `gelombang`, `tahun_daftar`, `status_pendaftaran`, `status_berkas`, `created_at`) VALUES
-(5, 6, 'MA-2025-0001', '1212121212', '2147483647', 'Alfi Salam', 'Muara Bungo', '2014-10-23', 'L', '088747491275', 'Mts Raudhatul Mujawwidin', 'MA', 1, '2025', 'Menunggu Verifikasi', 1, '2025-02-03 13:50:15');
+(8, 25, 'MTs-2025-0008', '1213141516', NULL, 'Alfi Salam', 'Muara Bungo', '2002-11-20', 'L', '088747491275', 'SDN 158 Rimbo Mulyo', 'MTs', 1, '2025', 'Menunggu Verifikasi', 1, '2025-02-13 07:56:21'),
+(11, 28, 'MA-2025-0009', '1234567890098765', '0987654321087654', 'rian', 'bungo', '2003-12-21', 'L', '098765431234', 'sd', 'MA', 1, '2025', 'Menunggu Verifikasi', 1, '2025-02-21 18:43:33'),
+(12, 29, 'MA-2025-0012', '1234567890121212', NULL, 'J', 'W', '2007-03-26', 'L', '634248765', 'Qw', 'MA', 1, '2025', 'Menunggu Verifikasi', 1, '2025-02-26 07:58:20');
 
 -- --------------------------------------------------------
 
@@ -299,7 +312,7 @@ CREATE TABLE IF NOT EXISTS `tbl_user` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_user`
@@ -307,7 +320,14 @@ CREATE TABLE IF NOT EXISTS `tbl_user` (
 
 INSERT INTO `tbl_user` (`id_user`, `nama_user`, `email`, `password`, `level`, `jenjang`, `foto`, `is_active`, `created_at`) VALUES
 (1, 'Admin PSB', 'admin@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'admin', NULL, 'user.jpg', '1', '2025-01-20 16:08:24'),
-(6, 'Alfi Salan', 'bocilciki20@gmail.com', '25d55ad283aa400af464c76d713c07ad', 'santri', 'MA', '1738590615_fcdef396b802754c34ce.jpeg', '1', '2025-02-03 13:50:15');
+(6, 'Alfi Salan', 'bocilciki20@gmail.com', '25d55ad283aa400af464c76d713c07ad', 'santri', 'MA', '1738590615_fcdef396b802754c34ce.jpeg', '1', '2025-02-03 13:50:15'),
+(23, 'Andi Lubis', 'lubis@gmail.com', '547169e9b90c798e0daae9e554ce04d0', 'santri', 'MTs', '1739176006_d3ee544dd52f41b8016e.jpg', '1', '2025-02-10 08:26:46'),
+(24, 'Ahmad Ical', 'ical20@gmail.com', '25d55ad283aa400af464c76d713c07ad', 'santri', 'MTs', '1739256817_0da8296dec592ff92d51.jpg', '1', '2025-02-11 06:53:37'),
+(25, 'Alfi Salam', 'bocilciki@gmail.com', '25d55ad283aa400af464c76d713c07ad', 'santri', 'MTs', '1739433381_4110eb65fa84dd24aeeb.jpg', '1', '2025-02-13 07:56:21'),
+(26, 'wahyu', 'wahyu@gmail.com', '25d55ad283aa400af464c76d713c07ad', 'santri', 'MTs', '1740057827_b61d0e67b430bdb93ad7.jpg', '1', '2025-02-20 13:23:47'),
+(27, 'itmam', 'itmam@gmail.com', '25d55ad283aa400af464c76d713c07ad', 'santri', 'MA', '1740082244_1c5573c4a79ecbe869bf.jpg', '1', '2025-02-20 20:10:44'),
+(28, 'rian', 'rian@gmail.com', '25d55ad283aa400af464c76d713c07ad', 'santri', 'MA', '1740163413_6305bfd88fa1bc7f2b0f.jpg', '1', '2025-02-21 18:43:33'),
+(29, 'J', 'tete@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'santri', 'MA', '1740556700_2f27a06313bcffdd1804.jpg', '1', '2025-02-26 07:58:20');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

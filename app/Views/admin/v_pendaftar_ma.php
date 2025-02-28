@@ -8,6 +8,24 @@
             <h4 class="mb-0">Data Pendaftar MA</h4>
         </div>
         <div class="card-body">
+            <?php if (session()->getFlashdata('success')) : ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?= session()->getFlashdata('success') ?>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            <?php endif; ?>
+
+            <?php if (session()->getFlashdata('error')) : ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?= session()->getFlashdata('error') ?>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            <?php endif; ?>
+
             <!-- Filter Tahun Ajaran -->
             <div class="row mb-3">
                 <div class="col-md-4">
@@ -78,6 +96,14 @@
                                             <i class="fas fa-times"></i> Tolak
                                         </button>
                                     <?php endif; ?>
+                                    
+                                    <!-- Tambahkan tombol Edit dan Hapus -->
+                                    <a href="<?= base_url('Admin/EditPendaftar/' . $row['id_santri']) ?>" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <button onclick="hapusPendaftar(<?= $row['id_santri'] ?>)" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -215,6 +241,24 @@ function tolakPembayaran(id_pembayaran) {
                     );
                 }
             });
+        }
+    });
+}
+
+// Tambahkan fungsi hapusPendaftar
+function hapusPendaftar(id) {
+    Swal.fire({
+        title: 'Hapus Data Pendaftar',
+        text: "Apakah Anda yakin ingin menghapus data pendaftar ini?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = '<?= base_url('Admin/HapusPendaftar') ?>/' + id;
         }
     });
 }

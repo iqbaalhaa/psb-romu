@@ -483,4 +483,144 @@ class Admin extends BaseController
             return redirect()->back();
         }
     }
+
+    public function EditPendaftar($id)
+    {
+        try {
+            // Ambil data santri
+            $data['santri'] = $this->M_Pendaftar->getDetailSantri($id);
+            if (!$data['santri']) {
+                throw new \Exception('Data santri tidak ditemukan');
+            }
+
+            // Ambil data detail santri
+            $data['detail'] = $this->db->table('tbl_detail_santri')
+                ->where('id_santri', $id)
+                ->get()
+                ->getRowArray();
+
+            $data['title'] = 'Edit Data Pendaftar';
+            return view('admin/v_edit_pendaftar', $data);
+
+        } catch (\Exception $e) {
+            session()->setFlashdata('error', $e->getMessage());
+            return redirect()->to('Admin/PendaftarMTs');
+        }
+    }
+
+    public function UpdatePendaftar($id)
+    {
+        try {
+            // Validasi input
+            $rules = [
+                'nisn' => 'required',
+                'nama_lengkap' => 'required',
+                'tempat_lahir' => 'required',
+                'tgl_lahir' => 'required',
+                'jenis_kelamin' => 'required|in_list[L,P]',
+                'no_hp' => 'required',
+                'gelombang' => 'required|in_list[1,2]',
+                'alamat' => 'required',
+                'desa' => 'required',
+                'kecamatan' => 'required',
+                'kabupaten' => 'required',
+                'provinsi' => 'required',
+                'nama_ayah' => 'required',
+                'pekerjaan_ayah' => 'required',
+                'nama_ibu' => 'required',
+                'pekerjaan_ibu' => 'required'
+            ];
+
+            if (!$this->validate($rules)) {
+                return redirect()->back()->withInput()->with('error', $this->validator->listErrors());
+            }
+
+            // Update data santri
+            $dataSantri = [
+                'nisn' => $this->request->getPost('nisn'),
+                'nama_lengkap' => $this->request->getPost('nama_lengkap'),
+                'tempat_lahir' => $this->request->getPost('tempat_lahir'),
+                'tgl_lahir' => $this->request->getPost('tgl_lahir'),
+                'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
+                'no_hp' => $this->request->getPost('no_hp'),
+                'gelombang' => $this->request->getPost('gelombang'),
+            ];
+
+            $this->db->transStart();
+            
+            $this->db->table('tbl_santri')
+                ->where('id_santri', $id)
+                ->update($dataSantri);
+
+            // Update data detail santri
+            $dataDetail = [
+                'alamat' => $this->request->getPost('alamat'),
+                'desa' => $this->request->getPost('desa'),
+                'kecamatan' => $this->request->getPost('kecamatan'),
+                'kabupaten' => $this->request->getPost('kabupaten'),
+                'provinsi' => $this->request->getPost('provinsi'),
+                'nama_ayah' => $this->request->getPost('nama_ayah'),
+                'pekerjaan_ayah' => $this->request->getPost('pekerjaan_ayah'),
+                'nama_ibu' => $this->request->getPost('nama_ibu'),
+                'pekerjaan_ibu' => $this->request->getPost('pekerjaan_ibu'),
+            ];
+
+            $this->db->table('tbl_detail_santri')
+                ->where('id_santri', $id)
+                ->update($dataDetail);
+
+            $this->db->transComplete();
+
+            if ($this->db->transStatus() === false) {
+                throw new \Exception('Gagal memperbarui data pendaftar');
+            }
+
+            session()->setFlashdata('success', 'Data pendaftar berhasil diperbarui');
+            return redirect()->to('Admin/PendaftarMTs');
+
+        } catch (\Exception $e) {
+            session()->setFlashdata('error', 'Gagal memperbarui data: ' . $e->getMessage());
+            return redirect()->back()->withInput();
+        }
+    }
+
+    public function HapusPendaftar($id)
+    {
+        try {
+            // Cek apakah data ada
+            $santri = $this->M_Pendaftar->getDetailSantri($id);
+            
+            if (!$santri) {
+                throw new \Exception('Data pendaftar tidak ditemukan.');
+            }
+
+            // Hapus data dari tabel terkait
+            $this->db->transStart();
+            
+            // Hapus detail santri
+            $this->db->table('tbl_detail_santri')->where('id_santri', $id)->delete();
+            
+            // Hapus pembayaran
+            $this->db->table('tbl_pembayaran')->where('id_santri', $id)->delete();
+            
+            // Hapus berkas
+            $this->db->table('tbl_berkas_santri')->where('id_santri', $id)->delete();
+            
+            // Hapus santri
+            $this->db->table('tbl_santri')->where('id_santri', $id)->delete();
+            
+            $this->db->transComplete();
+
+            if ($this->db->transStatus() === false) {
+                throw new \Exception('Gagal menghapus data pendaftar.');
+            }
+
+            session()->setFlashdata('success', 'Data pendaftar berhasil dihapus.');
+            return redirect()->to('Admin/PendaftarMTs');
+
+        } catch (\Exception $e) {
+            session()->setFlashdata('error', $e->getMessage());
+            return redirect()->to('Admin/PendaftarMTs');
+        }
+    }
 }

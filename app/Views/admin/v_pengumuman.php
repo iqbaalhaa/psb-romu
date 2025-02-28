@@ -70,7 +70,7 @@
                 </div>
                 <div class="form-group">
                     <label>Isi Pengumuman</label>
-                    <textarea name="isi" class="form-control" rows="5" placeholder="Isi Pengumuman" required></textarea>
+                    <textarea name="isi" class="form-control" rows="5" placeholder="Isi Pengumuman"></textarea>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
