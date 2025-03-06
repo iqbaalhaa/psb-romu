@@ -43,11 +43,17 @@ class Auth extends BaseController
         }
 
         $email = $this->request->getPost('email');
-        $password = md5($this->request->getPost('password'));
+        $password = $this->request->getPost('password');
 
+        // Debug: Log input credentials (jangan log password asli di production)
+        log_message('debug', 'Login attempt - Email: ' . $email);
+        
         $cek = $this->ModelAuth->CekLogin($email, $password);
-
+        
+        // Debug: Log hasil pengecekan
+        log_message('debug', 'Login check result: ' . ($cek ? 'User found' : 'User not found'));
         if ($cek) {
+            log_message('debug', 'User status: ' . ($cek['is_active'] == '1' ? 'Active' : 'Inactive'));
             if ($cek['is_active'] == '0') {
                 session()->setFlashdata('pesan', 'Akun anda tidak aktif!');
                 return redirect()->to(base_url());
